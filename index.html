@@ -4,1357 +4,677 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <meta name="google" content="notranslate">
-    <title>La península ibérica a principios de la Edad Antigua</title>
+    <title>Dates and Events in History</title>
     <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/icono.ico">
     <style>
         * { box-sizing: border-box; margin:0; padding:0; }
-        :root {
-            --blue-dark:#04032B;
-            --blue-700:#1a3a5f;
-            --blue-600:#254fba;
-            --orange:#f59e42;
-            --orange-700:#e67e22;
-            --bg-grad-1:#1a3a5f;
-            --bg-grad-2:#0d2340;
-            --white:#ffffff;
-            --green:#2ecc71;
-            --red:#e74c3c;
-            --panel:#E8EAFF;
+        :root{
+            --blue:#001DFF;--blue-dark:#04032B;--blue-700:#1a3a5f;--blue-600:#254fba;
+            --orange:#f59e42;--orange-700:#e67e22;--bg-grad-1:#1a3a5f;--bg-grad-2:#0d2340;
+            --white:#ffffff;--green:#2ecc71;--red:#e74c3c;--panel:#E8EAFF;
+            --card-base:#3498db;--card-selected:#f1c40f;
         }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, var(--bg-grad-1) 0%, var(--bg-grad-2) 100%);
-            min-height:100vh; display:flex; justify-content:center; align-items:flex-start;
-            padding:20px 12px; color:#333;
-        }
-        .game-container {
-            background:var(--white); border-radius:16px; box-shadow:0 12px 24px rgba(0,0,0,.12);
-            padding:1.2rem; max-width:980px; width:100%; min-height:640px; position:relative; overflow:hidden;
-            display:flex; flex-direction:column; margin-bottom:2rem;
-        }
-        header { text-align:center; margin-bottom:.4rem; margin-top:3.2rem; }
-        h1 { color:var(--blue-dark); font-size:clamp(1.5rem,4.2vw,2.4rem); font-weight:900; letter-spacing:.5px; }
-        .subtitle { color:var(--blue-700); font-size:clamp(.95rem,3vw,1.15rem); margin-top:.25rem; }
-        .highlight-keyword { color:var(--orange); font-weight:800; }
-
-        .btn { color:#fff; border:none; padding:.75rem 1.2rem; border-radius:10px; cursor:pointer; font-weight:800;
-            transition:transform .08s ease, box-shadow .2s ease, background-color .25s ease; min-width:140px; height:48px;
-            display:inline-flex; align-items:center; justify-content:center; font-size:1rem; }
-        .btn:hover { transform:translateY(-2px); box-shadow:0 6px 14px rgba(0,0,0,.12); }
-        .btn:active { transform:translateY(0) scale(.97); }
-        .btn:disabled { opacity:.5; cursor:not-allowed; transform:none; }
-        .btn-primary { background:var(--orange); }
-        .btn-primary:hover { background:var(--orange-700); }
-        .btn-blue { background:var(--blue-600); }
-        .btn-blue:hover { filter:brightness(.9); }
-        .btn-ghost { background:#e6f2ff; color:var(--blue-700); }
-
-        .screen { display:none; animation:fadeIn .35s ease; flex-direction:column; flex:1; }
-        .screen.active { display:flex; }
-        @keyframes fadeIn { from{opacity:0;transform:translateY(12px);} to{opacity:1;transform:translateY(0);} }
-
-        .game-info { display:flex; gap:.6rem; align-items:center; justify-content:space-between; margin:.3rem 0 .8rem; flex-wrap:wrap; }
-        .timer { font-weight:900; color:var(--blue-700); font-size:clamp(.95rem,2.3vw,1.15rem); }
-        .progress-bar { flex:1; height:10px; background:#e6f2ff; border-radius:999px; overflow:hidden; }
-        .progress-fill { height:100%; width:0%; background:linear-gradient(90deg, var(--orange) 0%, var(--orange-700) 100%); transition:width .3s ease; }
-
-        .top-controls { position:absolute; top:.8rem; right:1rem; display:flex; align-items:center; gap:8px; z-index:20; }
-        .lang-pill { display:flex; align-items:center; background:#fff; border-radius:999px; padding:3px; gap:3px;
-            box-shadow:0 2px 8px rgba(0,0,0,0.12); border:1px solid #e0e0e0; }
-        .lang-pill button { width:34px; height:34px; border-radius:50%; border:none; font-size:1.15rem; cursor:pointer;
-            display:flex; align-items:center; justify-content:center; background:transparent;
-            transition:background .2s, opacity .2s, transform .15s; }
-        .lang-pill button.active-lang { background:var(--blue-600); transform:scale(1.08); }
-        .lang-pill button:not(.active-lang) { opacity:.5; }
-        .lang-pill button:hover:not(.active-lang) { opacity:.8; transform:scale(1.05); }
-        .mute-btn { background:linear-gradient(135deg, var(--orange), var(--orange-700)); color:#fff; border:2px solid #fff;
-            width:38px; height:38px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center;
-            z-index:20; transition:transform .2s, box-shadow .2s; }
-        .mute-btn:hover { transform:scale(1.1); box-shadow:0 4px 12px rgba(245,158,66,.4); }
-        .mute-btn.muted { background:linear-gradient(135deg,#999,#777); }
-        .mute-btn svg { width:20px; height:20px; pointer-events:none; }
-
-        /* Pantalla Inicio */
-        .start-content { display:flex; flex-direction:column; justify-content:center; align-items:center; flex:1; gap:1rem; padding:1rem; }
-        .advice-box { background:var(--panel); border-left:4px solid var(--blue-700); padding:1rem 1.2rem; border-radius:12px;
-            color:var(--blue-700); max-width:760px; text-align:center; font-size:clamp(1rem,3vw,1.15rem); }
-        .start-image { max-width:280px; width:100%; margin:0 auto; }
-
-        @keyframes shakeAnim {
-            0%,100%{transform:translateX(0);}
-            20%{transform:translateX(-5px);}
-            40%{transform:translateX(5px);}
-            60%{transform:translateX(-5px);}
-            80%{transform:translateX(5px);}
-        }
-
-        /* Pantalla Resumen (bloques) */
-        .summary-wrapper { display:flex; flex-direction:column; align-items:center; gap:1rem; flex:1; padding:.6rem 0 1rem; }
-        .summary-intro { text-align:center; font-size:clamp(1.05rem,3vw,1.25rem); font-weight:800; color:var(--blue-700);
-            max-width:760px; margin-bottom:.2rem; }
-        .summary-container { width:100%; max-width:760px; display:flex; flex-direction:column; gap:14px; }
-        .summary-block { border-radius:16px; padding:1.4rem 1.6rem; border:2px solid; }
-        .summary-block-title { font-size:clamp(1.1rem,3vw,1.35rem); font-weight:800; margin-bottom:.7rem; }
-        .summary-list { list-style:disc; padding-left:1.4rem; }
-        .summary-list li { margin-bottom:.6rem; line-height:1.7; font-size:clamp(.9rem,2.3vw,1.02rem); color:var(--blue-dark); }
-        .summary-list li:last-child { margin-bottom:0; }
-        .keyword { font-weight:900; }
-        .summary-block.block-blue { background:#E8EAFF; border-color:var(--blue-600); }
-        .summary-block.block-blue .summary-block-title { color:var(--blue-600); }
-        .summary-block.block-blue .keyword { color:var(--blue-600); }
-        .summary-block.block-orange { background:#FFF1E0; border-color:var(--orange); }
-        .summary-block.block-orange .summary-block-title { color:var(--orange-700); }
-        .summary-block.block-orange .keyword { color:var(--orange-700); }
-        .summary-block.block-yellow { background:#FFF9DB; border-color:#e8b910; }
-        .summary-block.block-yellow .summary-block-title { color:#a17f00; }
-        .summary-block.block-yellow .keyword { color:#a17f00; }
-
-        /* Pantalla Juego 1: Test */
-        .test-wrapper { display:flex; flex-direction:column; align-items:center; gap:1.1rem; width:100%; max-width:640px; margin:0 auto; flex:1; }
-        .question-row { display:flex; align-items:center; gap:.7rem; width:100%; background-color:var(--panel);
-            border-left:5px solid var(--blue-600); border-radius:10px; padding:1.1rem 1.2rem; }
-        .question-text { font-size:clamp(1.05rem,2.6vw,1.3rem); font-weight:600; color:var(--blue-dark); flex:1; text-align:left; }
-        .btn-play-word { width:44px; height:44px; border-radius:50%; background:var(--blue-600); border:2px solid #fff; color:#fff;
-            cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 3px 8px rgba(37,79,186,.35);
-            transition:transform .15s; flex-shrink:0; }
-        .btn-play-word:hover { transform:scale(1.12); }
-        .btn-play-word svg { width:17px; height:17px; margin-left:2px; pointer-events:none; }
-        .options-grid { display:grid; gap:10px; width:100%; }
-        .option-btn { background-color:var(--white); border:2px solid var(--blue-600); color:var(--blue-600);
-            padding:1rem 15px; border-radius:10px; font-size:clamp(.95rem,2vw,1.1rem); cursor:pointer;
-            transition:all .2s; text-align:left; font-weight:600; }
-        .option-btn:hover:not(:disabled) { background-color:#f8f9fa; transform:scale(1.02); }
-        .option-btn.correct { background-color:#28a745 !important; color:#fff !important; border-color:#28a745 !important; }
-        .option-btn.wrong { background-color:var(--red) !important; color:#fff !important; border-color:var(--red) !important; animation:shakeAnim .3s ease-in-out; }
-        .option-btn:disabled { cursor:not-allowed; }
-
-        /* Pantalla Juego 2: Emparejar */
-        .match-container { display:grid; grid-template-columns:1fr 1fr; grid-auto-rows:1fr; gap:8px; margin:.5rem auto;
-            align-content:flex-start; justify-content:center; align-self:center; width:100%; max-width:700px; }
-        .memory-card {
-            background-color:var(--blue-600); color:#fff; border:3px solid transparent; border-radius:10px;
-            padding:12px 10px; cursor:pointer; transition:background-color .2s ease, box-shadow .2s ease, transform .15s ease;
-            text-align:center; min-height:80px; width:100%; height:100%; box-sizing:border-box;
-            display:flex; align-items:center; justify-content:center;
-            font-size:clamp(.85rem,2.4vw,1.05rem); font-weight:700; user-select:none; word-break:break-word;
-            overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,.08);
-        }
-        .memory-card:hover:not(.selected):not(.matched):not(.flash-error) { transform:scale(1.02); box-shadow:0 4px 10px rgba(0,0,0,.18); }
-        .memory-card.selected { background-color:var(--orange); animation:cardPulse 1s ease-in-out infinite; }
-        @keyframes cardPulse { 0%,100%{ transform:scale(1.02); } 50%{ transform:scale(1.05); } }
-        .memory-card.matched { background-color:var(--green); cursor:default; animation:none; transform:none; box-shadow:0 3px 10px rgba(46,204,113,.35); }
-        .memory-card.flash-error { animation:shakeAnim .4s ease-in-out; background-color:var(--red) !important; }
-
-        /* Pantalla Juego 3: Ordenar */
-        .order-wrapper { display:flex; flex-direction:column; align-items:center; gap:1.2rem; flex:1; padding:.5rem 0 1rem; width:100%; }
-        .phases-container { width:100%; max-width:700px; }
-        .phase-card { background:#f8fff9; border:2px solid #b7e4c7; border-radius:12px; padding:1rem; margin-bottom:1rem;
-            display:flex; align-items:center; justify-content:space-between; transition:all .3s ease; }
-        .phase-card:hover { transform:translateY(-4px); box-shadow:0 8px 16px rgba(0,0,0,.08); }
-        .phase-text { flex:1; font-weight:700; font-size:clamp(.9rem,2vw,1.1rem); color:var(--blue-dark); text-align:left; }
-        .phase-controls { display:flex; gap:.4rem; flex-shrink:0; }
-        .phase-btn { width:40px; height:40px; border-radius:8px; background:var(--orange); border:none; color:white; font-weight:800;
-            cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s ease; }
-        .phase-btn:hover:not(:disabled) { background:var(--orange-700); transform:scale(1.1); }
-        .phase-btn:disabled { background:#ccc; cursor:not-allowed; opacity:.5; }
-        .check-btn { width:100%; max-width:300px; margin-top:.5rem; }
-        .phase-card.correct .phase-text { color:var(--green); font-weight:900; }
-        .phase-card.incorrect .phase-text { color:var(--red); font-weight:900; }
-        .phase-card.shake { animation:shakeAnim .4s ease; }
-
-        /* Pantalla Final */
-        .results { display:flex; flex-direction:column; align-items:center; justify-content:center; flex:1; gap:.6rem; padding:1rem; text-align:center; }
-        .trophy { font-size:3.5rem; animation:bounce 1s ease infinite; }
-        @keyframes bounce { 0%,100%{transform:translateY(0) scale(1);} 50%{transform:translateY(-15px) scale(1.1);} }
-        .final-score { font-size:clamp(3rem,10vw,4.5rem); font-weight:900; color:var(--orange); }
-        .message { font-size:clamp(1.1rem,3vw,1.4rem); font-weight:700; color:var(--blue-700); text-align:center; }
-        .time-info { color:var(--blue-600); font-weight:600; }
-        .credit { font-size:.9rem; color:#999; margin-top:1rem; }
-        .school-logo { display:block; width:160px; max-width:28%; height:auto; margin-top:.8rem; border-radius:8px; object-fit:contain; }
-        @media (max-width:899px) { .school-logo { width:140px; max-width:160px; } }
-        @media (max-width:420px) { .school-logo { width:110px; max-width:40%; margin-top:.6rem; } }
-        .hall-of-fame { background:var(--panel); border-radius:12px; padding:1rem; margin-top:1.5rem; width:100%; max-width:600px; }
-        .hall-of-fame-title { color:var(--blue-700); font-weight:800; font-size:1.2rem; text-align:center; margin-bottom:.8rem; }
-        .hall-of-fame-table { width:100%; border-collapse:collapse; font-size:.9rem; }
-        .hall-of-fame-table th { background:var(--blue-600); color:white; padding:.5rem; text-align:left; }
-        .hall-of-fame-table td { padding:.4rem .5rem; border-bottom:1px solid #ddd; }
-        .hall-of-fame-table tr:last-child td { border-bottom:none; }
-        .hall-of-fame-table tr:nth-child(even) { background-color:rgba(255,255,255,.5); }
-        .hall-of-fame-error, .hall-of-fame-loading { padding:1rem; text-align:center; color:var(--blue-700); font-style:italic; }
-        .hall-of-fame-error { color:var(--red); }
-        .modal-overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5);
-            display:none; align-items:center; justify-content:center; z-index:999; }
-        .modal-overlay.active { display:flex; }
-        .modal-content { background:white; padding:2rem; border-radius:15px; width:90%; max-width:400px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.3); }
-        .modal-input { width:100%; padding:10px; margin:10px 0; border:2px solid #ddd; border-radius:8px; font-size:1rem; }
-        .modal-validation-msg { color:var(--red); font-size:.9rem; font-weight:700; margin:-4px 0 10px; text-align:center; animation:shakeAnim .4s ease; }
-        .confetti { position:fixed; width:10px; height:10px; border-radius:50%; animation:confetti-fall 3s linear forwards; z-index:999; }
-        @keyframes confetti-fall { 0%{transform:translate(0,-20px) rotate(0);opacity:1;} 100%{transform:translate(var(--tx),var(--ty)) rotate(360deg);opacity:0;} }
-        .hidden { display:none !important; }
-        @media (max-width:420px) { .btn { min-width:110px; padding:.6rem .9rem; height:44px; } }
-        @media (max-width:380px) {
-            .match-container { gap:6px; }
-            .memory-card { min-height:76px; padding:8px 6px; font-size:.8rem; border-radius:8px; }
-        }
+        body{ font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif; background:linear-gradient(135deg,var(--bg-grad-1) 0%,var(--bg-grad-2) 100%); min-height:100vh; display:flex; justify-content:center; align-items:flex-start; padding:20px 12px; color:#333; }
+        .game-container{ background:var(--white); border-radius:16px; box-shadow:0 12px 24px rgba(0,0,0,.12); padding:1.2rem; max-width:980px; width:100%; min-height:640px; position:relative; overflow:hidden; display:flex; flex-direction:column; margin-bottom:2rem; }
+        header{ text-align:center; margin-bottom:.4rem; margin-top:3.2rem; }
+        h1{ color:var(--blue-dark); font-size:clamp(1.6rem,4.5vw,2.6rem); font-weight:900; letter-spacing:.5px; }
+        .subtitle{ color:var(--blue-700); font-size:clamp(.95rem,3vw,1.15rem); margin-top:.25rem; }
+        .highlight-keyword{ color:var(--orange); font-weight:800; }
+        .btn{ color:#fff; border:none; padding:.75rem 1.2rem; border-radius:10px; cursor:pointer; font-weight:800; transition:transform .08s ease,box-shadow .2s ease,background-color .25s ease; min-width:140px; height:48px; display:inline-flex; align-items:center; justify-content:center; font-size:1rem; }
+        .btn:hover{ transform:translateY(-2px); box-shadow:0 6px 14px rgba(0,0,0,.12); }
+        .btn:active{ transform:translateY(0); }
+        .btn-primary{ background:var(--orange); }
+        .btn-primary:hover{ background:var(--orange-700); }
+        .btn-blue{ background:var(--blue-600); }
+        .btn-blue:hover{ filter:brightness(.9); }
+        .btn-ghost{ background:#e6f2ff; color:var(--blue-700); }
+        .screen{ display:none; animation:fadeIn .35s ease; flex-direction:column; flex:1; }
+        .screen.active{ display:flex; }
+        @keyframes fadeIn{ from{opacity:0;transform:translateY(12px);} to{opacity:1;transform:translateY(0);} }
+        .game-info{ display:flex; gap:.6rem; align-items:center; justify-content:space-between; margin:.3rem 0 .5rem; flex-wrap:wrap; }
+        .timer{ font-weight:900; color:var(--blue-700); font-size:clamp(.95rem,2.3vw,1.15rem); }
+        .progress-bar{ flex:1; height:10px; background:#e6f2ff; border-radius:999px; overflow:hidden; }
+        .progress-fill{ height:100%; width:0%; background:linear-gradient(90deg,var(--orange) 0%,var(--orange-700) 100%); transition:width .3s ease; }
+        .level-indicator{ font-weight:700; color:var(--blue-700); font-size:.9rem; background:#e6f2ff; padding:4px 10px; border-radius:20px; }
+        .top-controls{ position:absolute; top:.8rem; right:1rem; display:flex; align-items:center; gap:8px; z-index:20; }
+        .lang-pill{ display:flex; align-items:center; background:#fff; border-radius:999px; padding:3px; gap:3px; box-shadow:0 2px 8px rgba(0,0,0,0.12); border:1px solid #e0e0e0; }
+        .lang-pill button{ width:34px; height:34px; border-radius:50%; border:none; font-size:1.15rem; cursor:pointer; display:flex; align-items:center; justify-content:center; background:transparent; transition:background .2s,opacity .2s,transform .15s; }
+        .lang-pill button.active-lang{ background:var(--blue-600); transform:scale(1.08); }
+        .lang-pill button:not(.active-lang){ opacity:.5; }
+        .lang-pill button:hover:not(.active-lang){ opacity:.8; transform:scale(1.05); }
+        .mute-btn{ background:linear-gradient(135deg,var(--orange),var(--orange-700)); color:#fff; border:2px solid #fff; width:38px; height:38px; border-radius:50%; cursor:pointer; font-size:1rem; display:flex; align-items:center; justify-content:center; z-index:20; transition:transform .2s,box-shadow .2s; }
+        .mute-btn:hover{ transform:scale(1.1); box-shadow:0 4px 12px rgba(245,158,66,.4); }
+        .mute-btn.muted{ background:linear-gradient(135deg,#999,#777); }
+        .mute-btn svg{ width:20px; height:20px; pointer-events:none; }
+        .start-content{ display:flex; flex-direction:column; justify-content:center; align-items:center; flex:1; gap:1rem; padding:1rem; }
+        .advice-box{ background:var(--panel); border-left:4px solid var(--blue-700); padding:1rem 1.2rem; border-radius:12px; color:var(--blue-700); max-width:760px; text-align:center; font-size:clamp(1rem,3vw,1.15rem); }
+        .start-image{ max-width:300px; width:100%; margin:0 auto; }
+        .summary-wrapper{ padding:.4rem 0 1rem; width:100%; flex:1; overflow-y:auto; }
+        .summary-separator{ text-align:center; font-size:1.3rem; font-weight:900; color:var(--blue-dark); margin:1.2rem 0 .8rem; position:relative; }
+        .summary-separator::before,.summary-separator::after{ content:''; position:absolute; top:50%; width:calc(50% - 80px); height:2px; background:#e0e0e0; }
+        .summary-separator::before{ left:0; }
+        .summary-separator::after{ right:0; }
+        .accordion-item{ border-radius:14px; margin-bottom:12px; overflow:hidden; box-shadow:0 2px 10px rgba(0,0,0,0.06); border:1px solid #e8e8e8; transition:box-shadow .25s ease; }
+        .accordion-item:hover{ box-shadow:0 4px 16px rgba(0,0,0,0.1); }
+        .accordion-item.paleo-acc .accordion-header{ background:linear-gradient(135deg,#f4a6a0 0%,#e88a82 100%); }
+        .accordion-item.neo-acc .accordion-header{ background:linear-gradient(135deg,#bef264 0%,#a3e635 100%); }
+        .accordion-item.metals-acc .accordion-header{ background:linear-gradient(135deg,#fed7aa 0%,#fdba74 100%); }
+        .accordion-item.antigua-acc .accordion-header{ background:linear-gradient(135deg,#c8b6ff 0%,#a78bfa 100%); }
+        .accordion-item.media-acc .accordion-header{ background:linear-gradient(135deg,#a0d8ef 0%,#7ec8e3 100%); }
+        .accordion-item.moderna-acc .accordion-header{ background:linear-gradient(135deg,#ffe066 0%,#ffd43b 100%); }
+        .accordion-item.contemp-acc .accordion-header{ background:linear-gradient(135deg,#a8e6cf 0%,#81c784 100%); }
+        .accordion-header{ padding:1rem 1.2rem; cursor:pointer; display:flex; align-items:center; justify-content:space-between; color:#fff; user-select:none; transition:filter .15s ease; }
+        .accordion-header:hover{ filter:brightness(1.05); }
+        .accordion-header:active{ filter:brightness(0.95); }
+        .accordion-header-left{ display:flex; align-items:center; gap:.7rem; }
+        .accordion-header-icon{ font-size:clamp(1.6rem,4vw,2.2rem); line-height:1; filter:drop-shadow(0 1px 2px rgba(0,0,0,0.2)); }
+        .accordion-header-title{ font-size:clamp(1.05rem,3vw,1.3rem); font-weight:900; letter-spacing:.3px; text-shadow:0 1px 3px rgba(0,0,0,0.15); }
+        .accordion-chevron{ width:28px; height:28px; display:flex; align-items:center; justify-content:center; transition:transform .3s cubic-bezier(0.4,0,0.2,1); flex-shrink:0; }
+        .accordion-chevron svg{ width:22px; height:22px; stroke:#fff; stroke-width:3; fill:none; }
+        .accordion-item.open .accordion-chevron{ transform:rotate(180deg); }
+        .accordion-body{ max-height:0; overflow:hidden; transition:max-height .4s cubic-bezier(0.4,0,0.2,1),padding .3s ease; background:#fff; }
+        .accordion-item.open .accordion-body{ max-height:600px; }
+        .accordion-body-inner{ padding:.8rem 1.2rem 1.2rem; }
+        .key-fact{ border-radius:10px; padding:.85rem 1rem; margin-bottom:.5rem; display:flex; align-items:flex-start; gap:.65rem; font-weight:700; font-size:clamp(.92rem,2.5vw,1.08rem); line-height:1.55; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+        .key-fact-icon{ font-size:clamp(1.3rem,3.5vw,1.6rem); line-height:1; flex-shrink:0; margin-top:1px; }
+        .key-fact-text{ flex:1; }
+        .paleo-acc .key-fact{ background:linear-gradient(135deg,#fef2f2 0%,#fde8e8 100%); color:#991b1b; border-left:4px solid #f4a6a0; }
+        .neo-acc .key-fact{ background:linear-gradient(135deg,#f7fee7 0%,#ecfccb 100%); color:#3f6212; border-left:4px solid #bef264; }
+        .metals-acc .key-fact{ background:linear-gradient(135deg,#fff7ed 0%,#ffedd5 100%); color:#9a3412; border-left:4px solid #fed7aa; }
+        .antigua-acc .key-fact{ background:linear-gradient(135deg,#f3f0ff 0%,#ede9fe 100%); color:#5b21b6; border-left:4px solid #a78bfa; }
+        .media-acc .key-fact{ background:linear-gradient(135deg,#e8f7fd 0%,#d4eef7 100%); color:#0c4a6e; border-left:4px solid #7ec8e3; }
+        .moderna-acc .key-fact{ background:linear-gradient(135deg,#fefce8 0%,#fef9c3 100%); color:#854d0e; border-left:4px solid #ffd43b; }
+        .contemp-acc .key-fact{ background:linear-gradient(135deg,#ecfdf5 0%,#d1fae5 100%); color:#166534; border-left:4px solid #81c784; }
+        .fact-list{ list-style:none; padding:0; margin:0; }
+        .fact-list li{ padding:.5rem 0 .5rem 1.6rem; position:relative; font-size:clamp(.88rem,2.4vw,1.02rem); color:#444; line-height:1.55; border-bottom:1px solid #f0f0f0; }
+        .fact-list li:last-child{ border-bottom:none; }
+        .paleo-acc .fact-list li::before{ content:'•'; position:absolute; left:.2rem; color:#e88a82; font-weight:bold; font-size:1.3em; top:.35rem; }
+        .neo-acc .fact-list li::before{ content:'•'; position:absolute; left:.2rem; color:#a3e635; font-weight:bold; font-size:1.3em; top:.35rem; }
+        .metals-acc .fact-list li::before{ content:'•'; position:absolute; left:.2rem; color:#fdba74; font-weight:bold; font-size:1.3em; top:.35rem; }
+        .antigua-acc .fact-list li::before{ content:'•'; position:absolute; left:.2rem; color:#a78bfa; font-weight:bold; font-size:1.3em; top:.35rem; }
+        .media-acc .fact-list li::before{ content:'•'; position:absolute; left:.2rem; color:#7ec8e3; font-weight:bold; font-size:1.3em; top:.35rem; }
+        .moderna-acc .fact-list li::before{ content:'•'; position:absolute; left:.2rem; color:#ffd43b; font-weight:bold; font-size:1.3em; top:.35rem; }
+        .contemp-acc .fact-list li::before{ content:'•'; position:absolute; left:.2rem; color:#81c784; font-weight:bold; font-size:1.3em; top:.35rem; }
+        .fact-list li strong{ color:var(--blue-dark); }
+        .highlight-date{ color:var(--orange); font-weight:800; }
+        .game1-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; width:100%; max-width:900px; margin:0 auto; flex:1; align-content:start; padding:.5rem; }
+        .game1-col-title{ text-align:center; font-weight:800; color:var(--blue-700); font-size:1.1rem; padding-bottom:.5rem; }
+        .game1-card{ background-color:var(--card-base); color:white; border:4px solid transparent; border-radius:10px; padding:12px 10px; min-height:80px; min-width:140px; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:clamp(.85rem,2vw,1rem); text-align:center; cursor:pointer; transition:all .2s ease; user-select:none; line-height:1.3; }
+        .game1-card:hover:not(.matched):not(.selected){ transform:scale(1.02); box-shadow:0 4px 8px rgba(0,0,0,0.2); }
+        .game1-card.selected{ background-color:var(--card-selected); border-color:transparent; color:white; animation:pulse 1s infinite; }
+        .game1-card.matched{ background-color:var(--green); border-color:transparent; color:white; transform:scale(1); cursor:default; opacity:1; box-shadow:0 3px 10px rgba(46,204,113,0.35); }
+        .game1-card.flash-error{ animation:shake .3s ease-in-out; border-color:var(--red); background-color:var(--red); }
+        @keyframes pulse{ 0%{transform:scale(1);box-shadow:0 0 0 0 rgba(241,196,15,0.7);} 70%{transform:scale(1.02);box-shadow:0 0 0 10px rgba(241,196,15,0);} 100%{transform:scale(1);box-shadow:0 0 0 0 rgba(241,196,15,0);} }
+        @keyframes shake{ 0%{transform:translateX(0);} 20%{transform:translateX(-5px);} 40%{transform:translateX(5px);} 60%{transform:translateX(-5px);} 80%{transform:translateX(5px);} 100%{transform:translateX(0);} }
+        .ordering-wrapper{ display:flex; flex-direction:column; align-items:center; gap:.4rem; width:100%; max-width:650px; margin:0 auto; flex:1; justify-content:flex-start; padding-top:.2rem; }
+        .ordering-list{ width:100%; display:flex; flex-direction:column; gap:10px; }
+        .ordering-item{ position:relative; display:flex; align-items:stretch; }
+        .ordering-card{ flex:1; background:#f8fff9; border:2px solid #b7e4c7; border-radius:10px; padding:.95rem 3.4rem .95rem .9rem; text-align:center; font-weight:700; font-size:clamp(.92rem,2.5vw,1.05rem); color:var(--blue-dark); transition:all .2s ease; cursor:default; min-height:72px; display:flex; align-items:center; justify-content:center; line-height:1.3; }
+        .ordering-card:hover{ box-shadow:0 3px 8px rgba(0,0,0,0.08); background:#eef6ff; border-color:#90cdf4; }
+        .ordering-card.correct-highlight{ color:var(--green) !important; border-color:var(--green) !important; background:#d4edda !important; }
+        .ordering-card.incorrect-highlight{ color:var(--red) !important; border-color:var(--red) !important; background:#f8d7da !important; }
+        .arrow-btns{ position:absolute; right:0; top:0; bottom:0; width:46px; display:flex; flex-direction:column; gap:5px; padding:5px; box-sizing:border-box; }
+        .arrow-btn{ flex:1; border:none; background:var(--orange); color:#fff; font-size:1rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background .15s; padding:0; line-height:1; min-height:28px; border-radius:6px; }
+        .arrow-btn:hover:not(:disabled){ background:var(--orange-700); }
+        .arrow-btn:active:not(:disabled){ filter:brightness(.85); }
+        .arrow-btn:disabled{ background:#ccc; cursor:not-allowed; opacity:.5; }
+        .check-btn-wrapper{ margin-top:.5rem; }
+        .game4-wrapper{ display:flex; flex-direction:column; align-items:center; gap:1rem; width:100%; max-width:600px; margin:0 auto; flex:1; justify-content:flex-start; padding-top:.5rem; }
+        .game4-image-container{ width:100%; max-width:600px; aspect-ratio:4/3; display:flex; justify-content:center; align-items:center; overflow:hidden; }
+        .game4-image-container img{ width:100%; height:100%; object-fit:contain; border-radius:10px; filter:drop-shadow(0 4px 12px rgba(0,0,0,0.15)); }
+        .game4-buttons{ display:grid; grid-template-columns:repeat(4,1fr); gap:8px; width:100%; }
+        @media(max-width:600px){ .game4-buttons{ grid-template-columns:repeat(2,1fr); } }
+        .game4-buttons .btn{ flex:1; min-width:0; font-size:clamp(.78rem,1.8vw,.92rem); padding:.8rem .4rem; height:auto; min-height:52px; border-radius:12px; letter-spacing:.2px; }
+        .btn-paleo{ background:#f4a6a0; color:#991b1b; }
+        .btn-neo{ background:#bef264; color:#3f6212; }
+        .btn-metals{ background:#fed7aa; color:#9a3412; }
+        .btn-antigua{ background:#c8b6ff; color:#5b21b6; }
+        .btn-media{ background:#a0d8ef; color:#0c4a6e; }
+        .btn-moderna{ background:#ffe066; color:#854d0e; }
+        .btn-contemp{ background:#a8e6cf; color:#166534; }
+        .results{ display:flex; flex-direction:column; align-items:center; gap:.6rem; text-align:center; flex:1; justify-content:center; }
+        .final-title{ color:var(--blue-dark); font-weight:900; }
+        .big-score{ font-size:clamp(2.2rem,6vw,3.4rem); color:var(--blue-600); font-weight:900; }
+        .score-title{ font-size:1.0rem; color:var(--blue-700); margin-top:1rem; }
+        .final-time{ color:var(--blue-700); }
+        #trophyBox{ display:none; font-size:clamp(4rem,10vw,7rem); margin:.5rem 0; text-align:center; align-self:center; animation:bounce 1s ease infinite; color:var(--orange); line-height:1; }
+        @keyframes bounce{ 0%,100%{transform:translateY(0) scale(1);} 50%{transform:translateY(-15px) scale(1.1);} }
+        .credit{ color:var(--blue-700); margin-top:1rem; }
+        #finalMsg{ font-size:clamp(1.2rem,4.2vw,1.8rem); font-weight:800; color:var(--blue-700); margin-top:.6rem; }
+        .school-logo{ display:block; width:160px; max-width:28%; height:auto; margin-top:.8rem; border-radius:8px; object-fit:contain; }
+        @media(max-width:899px){ .school-logo{width:140px;max-width:160px;} }
+        @media(max-width:420px){ .school-logo{width:110px;max-width:40%;margin-top:.6rem;} }
+        .hall-of-fame{ background:var(--panel); border-radius:12px; padding:1rem; margin-top:1.5rem; width:100%; max-width:600px; }
+        .hall-of-fame-title{ color:var(--blue-700); font-weight:800; font-size:1.2rem; text-align:center; margin-bottom:.8rem; }
+        .hall-of-fame-table{ width:100%; border-collapse:collapse; font-size:.9rem; }
+        .hall-of-fame-table th{ background:var(--blue-600); color:white; padding:.5rem; text-align:left; }
+        .hall-of-fame-table td{ padding:.4rem .5rem; border-bottom:1px solid #ddd; }
+        .hall-of-fame-table tr:last-child td{ border-bottom:none; }
+        .hall-of-fame-table tr:nth-child(even){ background-color:rgba(255,255,255,0.5); }
+        .hall-of-fame-error,.hall-of-fame-loading{ padding:1rem; text-align:center; color:var(--blue-700); font-style:italic; }
+        .hall-of-fame-error{ color:var(--red); }
+        .modal-overlay{ position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); display:none; justify-content:center; align-items:center; z-index:1000; }
+        .modal-content{ background:white; padding:2rem; border-radius:15px; width:90%; max-width:400px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.3); }
+        .modal-input{ width:100%; padding:10px; margin:10px 0; border:2px solid #ddd; border-radius:8px; font-size:1rem; }
+        .confetti{ position:fixed; width:10px; height:10px; border-radius:50%; animation:confetti-fall 3s linear forwards; z-index:999; }
+        @keyframes confetti-fall{ 0%{transform:translate(0,-20px) rotate(0);opacity:1;} 100%{transform:translate(var(--tx),var(--ty)) rotate(360deg);opacity:0;} }
     </style>
 </head>
-<body lang="es">
+<body>
 <div class="game-container">
     <div class="top-controls">
         <div class="lang-pill">
-            <button class="lang-flag-btn active-lang" data-lang="es" title="Español">🇪🇸</button>
-            <button class="lang-flag-btn" data-lang="en" title="English">🇬🇧</button>
+            <button id="langEN" title="English">🇬🇧</button>
+            <button id="langES" class="active-lang" title="Español">🇪🇸</button>
         </div>
-        <button class="mute-btn" id="muteBtn" title="Volumen">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                <path d="M15.54 3.54a9 9 0 0 1 0 12.73M19.07 4.93a13 13 0 0 1 0 14.14"></path>
-            </svg>
+        <button class="mute-btn" id="muteBtn" title="Silenciar/Activar sonido">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
         </button>
     </div>
 
-    <!-- ===== PANTALLA INICIO ===== -->
     <section class="screen active" id="startScreen">
         <header>
-            <h1 id="startTitle">La península ibérica a principios de la Edad Antigua</h1>
-            <div class="subtitle" id="startSubtitle">Conoce la historia de esta etapa en la península ibérica</div>
+            <h1 data-i18n="startTitle">Dates and Events in History</h1>
+            <div class="subtitle" data-i18n="startSubtitle">Learn about the events that changed history.</div>
         </header>
         <div class="start-content">
-            <div class="advice-box" id="startAdvice">
-                A principios de la <span class="highlight-keyword">Edad Antigua</span>, la península estaba ocupada por pueblos <span class="highlight-keyword">indígenas</span>, luego fueron los <span class="highlight-keyword">tartessos</span> y más tarde llegaron <span class="highlight-keyword">colonizadores</span>.
+            <div class="advice-box">
+                <span class="advice-text" data-i18n="startAdvice"></span>
             </div>
-            <button class="btn btn-primary" id="playBtn">Comenzar</button>
-            <img class="start-image" src="https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Ni%C3%B1os.png" alt="Niños aprendiendo">
+            <button class="btn btn-primary" id="startBtn" data-i18n="startBtn">Start</button>
+            <img class="start-image" src="https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Ni%C3%B1os.png" alt="Kids learning">
             <div class="hall-of-fame" id="hallOfFame">
-                <div class="hall-of-fame-title">🏆 <span id="hofTitle">Mejores puntuaciones</span> 🏆</div>
+                <div class="hall-of-fame-title">🏆 Mejores puntuaciones 🏆</div>
                 <table class="hall-of-fame-table">
-                    <thead>
-                        <tr>
-                            <th id="hofPos">Posición</th>
-                            <th id="hofName">Nombre</th>
-                            <th id="hofPoints">Puntos</th>
-                            <th id="hofTime">Tiempo</th>
-                        </tr>
-                    </thead>
+                    <thead><tr><th>Posición</th><th>Nombre</th><th>Puntos</th><th>Tiempo</th></tr></thead>
                     <tbody id="hofTableBody"></tbody>
                 </table>
             </div>
         </div>
     </section>
 
-    <!-- ===== PANTALLA RESUMEN ===== -->
     <section class="screen" id="summaryScreen">
-        <header>
-            <h1 id="summaryTitle">La península ibérica a principios de la Edad Antigua</h1>
-        </header>
+        <header><h1 data-i18n="summaryTitle">Stages of Prehistory and History</h1></header>
         <div class="summary-wrapper">
-            <div class="summary-intro" id="summaryIntro">Principio de la Edad Antigua</div>
-            <div class="summary-container" id="summaryContainer"></div>
-            <button class="btn btn-primary" id="continueBtn">Continuar</button>
-        </div>
-    </section>
-
-    <!-- ===== PANTALLA JUEGO 1: TEST ===== -->
-    <section class="screen" id="game1Screen">
-        <header>
-            <h1 id="game1Title">La península a principios de la Edad Antigua</h1>
-        </header>
-        <div class="game-info">
-            <div class="timer" id="timerDisplay">00:00.00</div>
-            <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-        </div>
-        <div class="test-wrapper">
-            <div class="question-row">
-                <div class="question-text" id="questionText"></div>
-                <button class="btn-play-word" id="btnPlayQuestion" title="Escuchar">
-                    <svg viewBox="0 0 24 24" fill="#fff"><polygon points="6,4 20,12 6,20"></polygon></svg>
-                </button>
+            <div class="accordion-item paleo-acc" id="accPaleo">
+                <div class="accordion-header" onclick="toggleAccordion('accPaleo')">
+                    <div class="accordion-header-left"><span class="accordion-header-icon">🦴</span><span class="accordion-header-title" data-i18n="thPaleo">Palaeolithic</span></div>
+                    <div class="accordion-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+                </div>
+                <div class="accordion-body"><div class="accordion-body-inner">
+                    <div class="key-fact"><span class="key-fact-icon">🔴</span><span class="key-fact-text" data-i18n="keyFactPaleo"></span></div>
+                </div></div>
             </div>
-            <div class="options-grid" id="optionsContainer"></div>
+            <div class="accordion-item neo-acc" id="accNeo">
+                <div class="accordion-header" onclick="toggleAccordion('accNeo')">
+                    <div class="accordion-header-left"><span class="accordion-header-icon">🌿</span><span class="accordion-header-title" data-i18n="thNeo">Neolithic</span></div>
+                    <div class="accordion-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+                </div>
+                <div class="accordion-body"><div class="accordion-body-inner">
+                    <div class="key-fact"><span class="key-fact-icon">🟢</span><span class="key-fact-text" data-i18n="keyFactNeo"></span></div>
+                </div></div>
+            </div>
+            <div class="accordion-item metals-acc" id="accMetals">
+                <div class="accordion-header" onclick="toggleAccordion('accMetals')">
+                    <div class="accordion-header-left"><span class="accordion-header-icon">⚔️</span><span class="accordion-header-title" data-i18n="thMetals">Metal Ages</span></div>
+                    <div class="accordion-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+                </div>
+                <div class="accordion-body"><div class="accordion-body-inner">
+                    <div class="key-fact"><span class="key-fact-icon">🟠</span><span class="key-fact-text" data-i18n="keyFactMetals"></span></div>
+                </div></div>
+            </div>
+
+            <div class="summary-separator">HISTORY</div>
+
+            <div class="accordion-item antigua-acc" id="accAntigua">
+                <div class="accordion-header" onclick="toggleAccordion('accAntigua')">
+                    <div class="accordion-header-left"><span class="accordion-header-icon">📜</span><span class="accordion-header-title" data-i18n="thAntigua">Ancient Age</span></div>
+                    <div class="accordion-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+                </div>
+                <div class="accordion-body"><div class="accordion-body-inner">
+                    <div class="key-fact"><span class="key-fact-icon">🟣</span><span class="key-fact-text" data-i18n="keyFactAntigua"></span></div>
+                </div></div>
+            </div>
+            <div class="accordion-item media-acc" id="accMedia">
+                <div class="accordion-header" onclick="toggleAccordion('accMedia')">
+                    <div class="accordion-header-left"><span class="accordion-header-icon">🛡️</span><span class="accordion-header-title" data-i18n="thMedia">Middle Ages</span></div>
+                    <div class="accordion-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+                </div>
+                <div class="accordion-body"><div class="accordion-body-inner">
+                    <div class="key-fact"><span class="key-fact-icon">🔵</span><span class="key-fact-text" data-i18n="keyFactMedia"></span></div>
+                </div></div>
+            </div>
+            <div class="accordion-item moderna-acc" id="accModerna">
+                <div class="accordion-header" onclick="toggleAccordion('accModerna')">
+                    <div class="accordion-header-left"><span class="accordion-header-icon">🌍</span><span class="accordion-header-title" data-i18n="thModerna">Modern Age</span></div>
+                    <div class="accordion-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+                </div>
+                <div class="accordion-body"><div class="accordion-body-inner">
+                    <div class="key-fact"><span class="key-fact-icon">🟡</span><span class="key-fact-text" data-i18n="keyFactModerna"></span></div>
+                </div></div>
+            </div>
+            <div class="accordion-item contemp-acc" id="accContemp">
+                <div class="accordion-header" onclick="toggleAccordion('accContemp')">
+                    <div class="accordion-header-left"><span class="accordion-header-icon">💻</span><span class="accordion-header-title" data-i18n="thContemp">Contemporary Age</span></div>
+                    <div class="accordion-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+                </div>
+                <div class="accordion-body"><div class="accordion-body-inner">
+                    <div class="key-fact"><span class="key-fact-icon">🟢</span><span class="key-fact-text" data-i18n="keyFactContemp"></span></div>
+                </div></div>
+            </div>
         </div>
+        <div style="text-align:center;margin-top:1rem;"><button class="btn btn-primary" id="playBtn" data-i18n="playBtn">Play</button></div>
     </section>
 
-    <!-- ===== PANTALLA JUEGO 2: EMPAREJAR ===== -->
+    <section class="screen" id="game1Screen">
+        <header><h1 data-i18n="game1Title">Events and Dates</h1></header>
+        <div class="game-info">
+            <div class="timer" id="timerGame1">00:00.0</div>
+            <div class="progress-bar"><div class="progress-fill" id="progressFillGame1"></div></div>
+            <div class="level-indicator" data-i18n="level1">Level 1/4</div>
+        </div>
+        <div class="game1-grid" id="game1Grid"></div>
+    </section>
+
     <section class="screen" id="game2Screen">
         <header>
-            <h1 id="game2Title">Relaciona: Principios de la Edad Antigua</h1>
+            <h1 data-i18n="game2Title">Stages of History</h1>
+            <div class="subtitle" data-i18n="game2Subtitle">Order from oldest to newest</div>
         </header>
         <div class="game-info">
-            <div class="timer" id="timerDisplay2">00:00.00</div>
-            <div class="progress-bar"><div class="progress-fill" id="progressFill2"></div></div>
+            <div class="timer" id="timerGame2">00:00.0</div>
+            <div class="progress-bar"><div class="progress-fill" id="progressFillGame2"></div></div>
+            <div class="level-indicator" data-i18n="level2">Level 2/4</div>
         </div>
-        <div class="match-container" id="game2Container"></div>
+        <div class="ordering-wrapper" id="game2Wrapper"></div>
     </section>
 
-    <!-- ===== PANTALLA JUEGO 3: ORDENAR ===== -->
     <section class="screen" id="game3Screen">
         <header>
-            <h1 id="game3Title">Ordena en el tiempo estos pueblos</h1>
+            <h1 data-i18n="game3Title">Events that Changed History</h1>
+            <div class="subtitle" data-i18n="game3Subtitle">Order from oldest to newest</div>
         </header>
         <div class="game-info">
-            <div class="timer" id="timerDisplay3">00:00.00</div>
-            <div class="progress-bar"><div class="progress-fill" id="progressFill3"></div></div>
+            <div class="timer" id="timerGame3">00:00.0</div>
+            <div class="progress-bar"><div class="progress-fill" id="progressFillGame3"></div></div>
+            <div class="level-indicator" data-i18n="level3">Level 3/4</div>
         </div>
-        <div class="order-wrapper">
-            <div class="phases-container" id="phasesContainer"></div>
-            <button class="btn btn-primary check-btn" id="checkPhasesBtn">Comprobar</button>
+        <div class="ordering-wrapper" id="game3Wrapper"></div>
+    </section>
+
+    <section class="screen" id="game4Screen">
+        <header><h1 data-i18n="game4Title">What stage do these images represent?</h1></header>
+        <div class="game-info">
+            <div class="timer" id="timerGame4">00:00.0</div>
+            <div class="progress-bar"><div class="progress-fill" id="progressFillGame4"></div></div>
+            <div class="level-indicator" data-i18n="level4">Level 4/4</div>
+        </div>
+        <div class="game4-wrapper">
+            <div class="game4-image-container" id="game4Display"></div>
+            <div class="game4-buttons" id="game4Buttons"></div>
         </div>
     </section>
 
-    <!-- ===== PANTALLA FINAL ===== -->
     <section class="screen" id="finalScreen">
-        <header>
-            <h1 class="final-title" id="finalTitle">La península ibérica a principios de la Edad Antigua</h1>
-        </header>
+        <header><h1 class="final-title" data-i18n="finalTitle">Dates and Events in History</h1></header>
         <div class="results">
-            <div id="trophyDiv" class="trophy hidden">🏆</div>
-            <div id="scoreLabel" style="font-weight:700; color:var(--blue-700); font-size:1.1rem;">Puntuación:</div>
-            <div class="final-score" id="finalScore">100</div>
-            <div class="message" id="finalMessage">¡Estu...pendo! ¡Puntuación perfecta!</div>
-            <div class="time-info" id="finalTime">Tiempo: 01:23.50</div>
-            <div class="credit">Creado por Manuel J. Ventura</div>
-            <img class="school-logo" src="https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Siurot.png" alt="Logo Siurot">
-            <button class="btn btn-primary" id="backBtn">Volver al menú</button>
+            <div id="trophyBox">🏆</div>
+            <div class="score-title" data-i18n="scoreLabel">Score:</div>
+            <div class="big-score" id="finalScore">0</div>
+            <div class="final-time"><span data-i18n="timeLabel">Time:</span> <span id="finalTime">00:00.0</span></div>
+            <div id="finalMsg" class="subtitle"></div>
+            <button class="btn btn-primary" id="backToMenuBtn" style="background:var(--orange);" data-i18n="backBtn">Back to menu</button>
+            <span class="credit">Creado por Manuel J. Ventura</span>
+            <img class="school-logo" src="https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Siurot.png" alt="School logo" />
         </div>
     </section>
 </div>
 
-<!-- Modal de Envío de Puntuación -->
-<div class="modal-overlay" id="submitModal">
+<div id="submitModal" class="modal-overlay">
     <div class="modal-content">
-        <h2 id="modalTitle">¡Juego Terminado!</h2>
-        <p id="modalTimeLabel">Tu tiempo: <span id="modalTime">01:23.50</span></p>
-        <input class="modal-input" id="playerName" placeholder="Nombre" maxlength="15" />
-        <input class="modal-input" id="playerSurname" placeholder="Apellido" maxlength="15" />
-        <p id="modalValidationMsg" class="modal-validation-msg hidden"></p>
-        <button class="btn btn-primary" id="submitScoreBtn">Guardar</button>
-        <button class="btn btn-ghost" id="discardScoreBtn">Cancelar</button>
+        <h3 data-i18n="modalTitle">Game Over!</h3>
+        <p><span data-i18n="modalTime">Your time:</span> <span id="modalTime">00:00.0</span></p>
+        <input type="text" id="playerName" class="modal-input" placeholder="Nombre" maxlength="15">
+        <input type="text" id="playerSurname" class="modal-input" placeholder="Apellido" maxlength="20">
+        <div style="display:flex;gap:10px;justify-content:center;">
+            <button id="submitScoreBtn" class="btn btn-primary" data-i18n="modalSave">Save</button>
+            <button id="discardScoreBtn" class="btn btn-ghost" data-i18n="modalCancel">Cancel</button>
+        </div>
     </div>
 </div>
 
 <script>
-/* ====================================================
-   CONFIGURACIÓN GLOBAL
-===================================================== */
-const SHEET_NAME = "Antigua";
-const APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbybqyFsTT4T6kQtDVim40mnq7mV0FspYPqfa2ivX1lL62fLVYtOQDLahWc6um2DNaV3Sg/exec";
+    const SHEET_NAME = "Acontecimientos";
+    const APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbybqyFsTT4T6kQtDVim40mnq7mV0FspYPqfa2ivX1lL62fLVYtOQDLahWc6um2DNaV3Sg/exec";
+    let soundEnabled=true,isMuted=false,audioCtxRef=null,startTime=0,timerInterval=null,elapsed=0,finalTimeVal=0,finalScoreVal=0;
+    const MIN_ATTEMPTS=16;
+    let totalAttempts=0,currentLang='es',activeGame=null;
 
-/* ====================================================
-   DATOS DEL RESUMEN (BLOQUES)
-===================================================== */
-const summaryData = {
-    es: [
-        {
-            heading: "Pueblos indígenas",
-            items: ["Al principio de la Edad Antigua, la península ibérica estaba habitada por pueblos indígenas."]
+    const audioUrls={correct:'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Correcto.mp3',error:'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Error.mp3',tap:'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Tap.mp3',victory:'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Termin%C3%A9.mp3',completed:'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Completado.mp3'};
+    const audioObjects={};
+    Object.keys(audioUrls).forEach(k=>{const a=new Audio();a.src=audioUrls[k];a.preload='auto';audioObjects[k]=a;});
+    function reproducirSonidoCorrecto(){if(!soundEnabled||isMuted)return;const a=audioObjects['correct'];if(!a)return;try{a.currentTime=0;a.play();}catch(e){}}
+    function reproducirSonidoError(){if(!soundEnabled||isMuted)return;const a=audioObjects['error'];if(!a)return;try{a.currentTime=0;a.play();}catch(e){}}
+    function reproducirSonidoVictoria(){if(!soundEnabled||isMuted)return;const a=audioObjects['victory'];if(!a)return;try{a.currentTime=0;a.play();}catch(e){}}
+    function reproducirSonidoCompletado(){if(!soundEnabled||isMuted)return;const a=audioObjects['completed'];if(!a)return;try{a.currentTime=0;a.play();}catch(e){}}
+    function reproducirSonidoTap(){if(!soundEnabled||isMuted)return;const a=audioObjects['tap'];if(!a)return;try{a.currentTime=0;a.play();}catch(e){}}
+
+    function unlockAudioContext(){try{const ctx=new(window.AudioContext||window.webkitAudioContext)();if(ctx.state==='suspended')ctx.resume();const b=ctx.createBuffer(1,1,22050);const s=ctx.createBufferSource();s.buffer=b;s.connect(ctx.destination);s.start();audioCtxRef=ctx;}catch(e){}}
+    let ttsForced=false;
+    function forceInitTTS(){if(ttsForced)return;if(window.speechSynthesis.getVoices().length>0){ttsForced=true;return;}const u=new SpeechSynthesisUtterance('');u.volume=0;window.speechSynthesis.speak(u);ttsForced=true;}
+    if(window.speechSynthesis){window.speechSynthesis.onvoiceschanged=function(){ttsForced=true;};}
+    function getBestVoice(l){const v=window.speechSynthesis.getVoices();let r=v.find(x=>x.name.includes('Google')&&x.lang.startsWith(l));if(r)return r;r=v.find(x=>(x.name.includes('Microsoft')||x.name.includes('Natural'))&&x.lang.startsWith(l));if(r)return r;r=v.find(x=>x.lang.startsWith(l));return r||null;}
+    function speakText(t){if(!window.speechSynthesis)return;window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);const l=currentLang==='en'?'en-GB':'es-ES';const v=getBestVoice(currentLang==='en'?'en':'es');if(v)u.voice=v;u.lang=l;u.rate=0.85;window.speechSynthesis.speak(u);}
+
+    function toggleAccordion(id){document.getElementById(id).classList.toggle('open');reproducirSonidoTap();}
+
+    const i18n={
+        en:{
+            startTitle:'Dates and Events in History',startSubtitle:'Learn about the events that changed history.',
+            startAdvice:'Our history is divided into Prehistory (<span class="highlight-keyword">Palaeolithic</span>, <span class="highlight-keyword">Neolithic</span> and <span class="highlight-keyword">Metal Ages</span>) and History (<span class="highlight-keyword">Ancient Age</span>, <span class="highlight-keyword">Middle Ages</span>, <span class="highlight-keyword">Modern Age</span> and <span class="highlight-keyword">Contemporary Age</span>). All these stages are marked by events that changed human life.<br><strong style="display:block;margin-top:.5rem;text-align:center;">Good luck!</strong>',
+            startBtn:'Start',playBtn:'Play',summaryTitle:'Stages of Prehistory and History',
+            thPaleo:'Palaeolithic',thNeo:'Neolithic',thMetals:'Metal Ages',thAntigua:'Ancient Age',thMedia:'Middle Ages',thModerna:'Modern Age',thContemp:'Contemporary Age',
+            keyFactPaleo:'<strong>Human beings appear</strong> — <span class="highlight-date">2 million years ago</span>',
+            keyFactNeo:'<strong>Agriculture and livestock farming appear</strong> — <span class="highlight-date">12,000 years ago</span>',
+            keyFactMetals:'<strong>Use of metals</strong> — <span class="highlight-date">6,000 years ago</span>',
+            keyFactAntigua:'<strong>The invention of writing</strong> — <span class="highlight-date">3,500 BC</span>',
+            keyFactMedia:'<strong>End of the Roman Empire</strong> — <span class="highlight-date">476 AD</span>',
+            keyFactModerna:'<strong>Discovery of America</strong> — <span class="highlight-date">1,492</span>',
+            keyFactContemp:'<strong>The French Revolution</strong> — <span class="highlight-date">1,789</span>',
+            game1Title:'Events and Dates',level1:'Level 1/4',level2:'Level 2/4',level3:'Level 3/4',level4:'Level 4/4',
+            game2Title:'Stages of History',game2Subtitle:'Order from oldest to newest',game3Title:'Events that Changed History',game3Subtitle:'Order from oldest to newest',game4Title:'What stage do these images represent?',
+            btnPaleo:'Palaeolithic',btnNeo:'Neolithic',btnMetals:'Metal Ages',btnAntigua:'Ancient Age',btnMedia:'Middle Ages',btnModerna:'Modern Age',btnContemp:'Contemporary Age',
+            checkBtn:'Check',finalTitle:'Dates and Events in History',scoreLabel:'Score:',timeLabel:'Time:',backBtn:'Back to menu',modalTitle:'Game Over!',modalTime:'Your time:',modalSave:'Save',modalCancel:'Cancel',
+            msgPerfect:'Well done, maximum score!',msgNoPerfect:'Good job! Keep practising'
         },
-        {
-            heading: "Tartessos",
-            items: ["La primera gran civilización que apareció fue Tartessos. Conocían la escritura y tenían joyas de oro (Tesoro del Carambolo)."]
-        },
-        {
-            heading: "Pueblos colonizadores",
-            items: ["A partir del año 1000 a. C. llegaron pueblos colonizadores: fenicios (VII a. C.), griegos (VI a. C.) y, más tarde, cartagineses (III a. C.). Estos pueblos eran comerciantes."]
+        es:{
+            startTitle:'Fechas y acontecimientos que marcan la historia',startSubtitle:'Aprende los acontecimientos que cambiaron la historia.',
+            startAdvice:'Nuestra historia se divide en Prehistoria (<span class="highlight-keyword">Paleolítico</span>, <span class="highlight-keyword">Neolítico</span> y <span class="highlight-keyword">Edad de los Metales</span>) e Historia (<span class="highlight-keyword">Edad Antigua</span>, <span class="highlight-keyword">Edad Media</span>, <span class="highlight-keyword">Edad Moderna</span> y <span class="highlight-keyword">Edad Contemporánea</span>). Todas estas etapas están marcadas por acontecimientos que cambiaron la vida del ser humano.<br><strong style="display:block;margin-top:.5rem;text-align:center;">¡Ánimo!</strong>',
+            startBtn:'Comenzar',playBtn:'Jugar',summaryTitle:'Etapas de la Prehistoria y de la Historia',
+            thPaleo:'Paleolítico',thNeo:'Neolítico',thMetals:'Edad de los Metales',thAntigua:'Edad Antigua',thMedia:'Edad Media',thModerna:'Edad Moderna',thContemp:'Edad Contemporánea',
+            keyFactPaleo:'<strong>Aparece el ser humano</strong> — <span class="highlight-date">Hace 2 millones de años</span>',
+            keyFactNeo:'<strong>Agricultura y ganadería</strong> — <span class="highlight-date">Hace 12.000 años</span>',
+            keyFactMetals:'<strong>Uso de metales</strong> — <span class="highlight-date">Hace 6.000 años</span>',
+            keyFactAntigua:'<strong>Se inventa la escritura</strong> — <span class="highlight-date">3.500 a.C.</span>',
+            keyFactMedia:'<strong>Cae el imperio romano</strong> — <span class="highlight-date">476 d.C.</span>',
+            keyFactModerna:'<strong>Descubrimiento de América</strong> — <span class="highlight-date">1.492</span>',
+            keyFactContemp:'<strong>La revolución francesa</strong> — <span class="highlight-date">1.789</span>',
+            game1Title:'Acontecimientos y fechas',level1:'Nivel 1/4',level2:'Nivel 2/4',level3:'Nivel 3/4',level4:'Nivel 4/4',
+            game2Title:'Etapas de la historia',game2Subtitle:'Ordena de más antiguo a más reciente',game3Title:'Acontecimientos que cambian la historia',game3Subtitle:'Ordena de más antiguo a más reciente',game4Title:'¿Qué etapa representan estas imágenes?',
+            btnPaleo:'Paleolítico',btnNeo:'Neolítico',btnMetals:'Edad de los Metales',btnAntigua:'Edad Antigua',btnMedia:'Edad Media',btnModerna:'Edad Moderna',btnContemp:'Edad Contemporánea',
+            checkBtn:'Comprobar',finalTitle:'Fechas y acontecimientos que marcan la historia',scoreLabel:'Puntuación:',timeLabel:'Tiempo:',backBtn:'Volver al menú',modalTitle:'¡Juego Terminado!',modalTime:'Tu tiempo:',modalSave:'Guardar',modalCancel:'Cancelar',
+            msgPerfect:'¡Enhorabuena, puntuación máxima!',msgNoPerfect:'¡Buen trabajo! Sigue practicando'
         }
-    ],
-    en: [
-        {
-            heading: "Indigenous peoples",
-            items: ["At the beginning of the Ancient Age, the Iberian Peninsula was inhabited by indigenous peoples."]
-        },
-        {
-            heading: "Tartessos",
-            items: ["The first great civilisation to appear was Tartessos. They knew how to write and had gold jewellery (the Carambolo Treasure)."]
-        },
-        {
-            heading: "Colonising peoples",
-            items: ["From 1000 BC onwards, colonising peoples arrived: Phoenicians (7th century BC), Greeks (6th century BC) and, later, Carthaginians (3rd century BC). These peoples were traders."]
-        }
-    ]
-};
-
-const summaryIntroText = {
-    es: "Principio de la Edad Antigua",
-    en: "Beginning of the Ancient Age"
-};
-
-const summaryKeywords = {
-    es: ['indígenas','tartessos','tartesos','escritura','tesoro del carambolo','colonizadores','fenicios','griegos','cartagineses','comerciantes'],
-    en: ['indigenous','tartessos','write','carambolo treasure','colonising','colonisers','phoenicians','greeks','carthaginians','traders']
-};
-
-/* ====================================================
-   DATOS DEL JUEGO 1: TEST
-===================================================== */
-const testQuestionsES = [
-    {
-        q: "A principios de la Edad Antigua, ¿qué pueblos vivían en la península ibérica?",
-        options: [
-            { text: "Pueblos indígenas", correct: true },
-            { text: "Celtas, íberos y celtíberos", correct: false },
-            { text: "Fenicios, griegos y cartagineses", correct: false },
-            { text: "Pueblos tartessos", correct: false }
-        ]
-    },
-    {
-        q: "¿Cómo se llamó la primera gran civilización que apareció en la península?",
-        options: [
-            { text: "Pueblos indígenas", correct: false },
-            { text: "Celtas, íberos y celtíberos", correct: false },
-            { text: "Los romanos", correct: false },
-            { text: "Tartessos", correct: true }
-        ]
-    },
-    {
-        q: "¿Qué significa la expresión \"colonizadores\"?",
-        options: [
-            { text: "Que a lo largo del tiempo ocupan una zona y se quedan a vivir", correct: true },
-            { text: "Que conquistan un territorio con ejércitos", correct: false },
-            { text: "Que allí llegó Cristóbal Colón", correct: false },
-            { text: "Que se colaron y llegaron los primeros", correct: false }
-        ]
-    },
-    {
-        q: "¿Quiénes eran los pueblos colonizadores?",
-        options: [
-            { text: "Pueblos indígenas", correct: false },
-            { text: "Celtas, íberos y celtíberos", correct: false },
-            { text: "Fenicios, griegos y cartagineses", correct: true },
-            { text: "Pueblos tartessos", correct: false }
-        ]
-    },
-    {
-        q: "¿Quiénes fueron los primeros en conocer la escritura y fueron famosos por el Tesoro del Carambolo?",
-        options: [
-            { text: "Pueblos indígenas", correct: false },
-            { text: "Celtas, íberos y celtíberos", correct: false },
-            { text: "Los romanos", correct: false },
-            { text: "Tartessos", correct: true }
-        ]
-    }
-];
-
-const testQuestionsEN = [
-    {
-        q: "At the beginning of the Ancient Age, which peoples lived in the Iberian Peninsula?",
-        options: [
-            { text: "Indigenous peoples", correct: true },
-            { text: "Celts, Iberians and Celtiberians", correct: false },
-            { text: "Phoenicians, Greeks and Carthaginians", correct: false },
-            { text: "Tartessian peoples", correct: false }
-        ]
-    },
-    {
-        q: "What was the first great civilisation to appear in the peninsula called?",
-        options: [
-            { text: "Indigenous peoples", correct: false },
-            { text: "Celts, Iberians and Celtiberians", correct: false },
-            { text: "The Romans", correct: false },
-            { text: "Tartessos", correct: true }
-        ]
-    },
-    {
-        q: "What does the word \"colonisers\" mean?",
-        options: [
-            { text: "Peoples who, over time, occupy an area and settle there to live", correct: true },
-            { text: "Peoples who conquer a territory with armies", correct: false },
-            { text: "That Christopher Columbus arrived there", correct: false },
-            { text: "Peoples who sneaked in and arrived first", correct: false }
-        ]
-    },
-    {
-        q: "Who were the colonising peoples?",
-        options: [
-            { text: "Indigenous peoples", correct: false },
-            { text: "Celts, Iberians and Celtiberians", correct: false },
-            { text: "Phoenicians, Greeks and Carthaginians", correct: true },
-            { text: "Tartessian peoples", correct: false }
-        ]
-    },
-    {
-        q: "Who were the first to know how to write and became famous for the Carambolo Treasure?",
-        options: [
-            { text: "Indigenous peoples", correct: false },
-            { text: "Celts, Iberians and Celtiberians", correct: false },
-            { text: "The Romans", correct: false },
-            { text: "Tartessos", correct: true }
-        ]
-    }
-];
-
-const testQuestionsByLang = { es: testQuestionsES, en: testQuestionsEN };
-const TEST_TOTAL = testQuestionsES.length; // 5
-
-/* ====================================================
-   DATOS DEL JUEGO 2: EMPAREJAR
-===================================================== */
-const game2Data = {
-    es: [
-        { id:0, term:"Primeros pueblos", def:"Indígenas" },
-        { id:1, term:"Primera gran civilización", def:"Tartessos" },
-        { id:2, term:"Pueblos colonizadores", def:"Fenicios, griegos, cartagineses" },
-        { id:3, term:"Trabajo de los colonizadores", def:"Comerciantes" },
-        { id:4, term:"Joyas de oro", def:"Tesoro del Carambolo" }
-    ],
-    en: [
-        { id:0, term:"First peoples", def:"Indigenous peoples" },
-        { id:1, term:"First civilisation", def:"Tartessos" },
-        { id:2, term:"Colonising peoples", def:"Phoenicians, Greeks, Carthaginians" },
-        { id:3, term:"Colonisers' occupation", def:"Traders" },
-        { id:4, term:"Gold jewellery", def:"Carambolo Treasure" }
-    ]
-};
-const MATCH_TOTAL = game2Data.es.length; // 5
-
-/* ====================================================
-   DATOS DEL JUEGO 3: ORDENAR
-===================================================== */
-const game3Data = {
-    es: [
-        "Pueblos indígenas",
-        "Civilización de Tartessos",
-        "Colonizadores: fenicios, griegos y cartagineses"
-    ],
-    en: [
-        "Indigenous peoples",
-        "Tartessos civilisation",
-        "Colonisers: Phoenicians, Greeks and Carthaginians"
-    ]
-};
-const ORDER_TOTAL = game3Data.es.length; // 3
-
-const TOTAL_INTERACTIONS = TEST_TOTAL + MATCH_TOTAL + ORDER_TOTAL; // 13
-
-/* ====================================================
-   i18n TEXTOS DE INTERFAZ
-===================================================== */
-const i18n = {
-    es: {
-        startTitle: 'La península ibérica a principios de la Edad Antigua',
-        startSubtitle: 'Conoce la historia de esta etapa en la península ibérica',
-        startAdvice: 'A principios de la <span class="highlight-keyword">Edad Antigua</span>, la península estaba ocupada por pueblos <span class="highlight-keyword">indígenas</span>, luego fueron los <span class="highlight-keyword">tartessos</span> y más tarde llegaron <span class="highlight-keyword">colonizadores</span>.',
-        startBtn: 'Comenzar',
-        summaryTitle: 'La península ibérica a principios de la Edad Antigua',
-        continueBtn: 'Continuar',
-        hofTitle: 'Mejores puntuaciones',
-        hofPos: 'Posición', hofName: 'Nombre', hofPoints: 'Puntos', hofTime: 'Tiempo',
-        game1Title: 'La península a principios de la Edad Antigua',
-        game2Title: 'Relaciona: Principios de la Edad Antigua',
-        game3Title: 'Ordena en el tiempo estos pueblos',
-        checkBtn: 'Comprobar',
-        finalTitle: 'La península ibérica a principios de la Edad Antigua',
-        scoreLabel: 'Puntuación:',
-        timeLabel: 'Tiempo:',
-        backBtn: 'Volver al menú',
-        modalTitle: '¡Juego Terminado!',
-        modalTimeLabel: 'Tu tiempo:',
-        modalSave: 'Guardar',
-        modalCancel: 'Cancelar',
-        namePlaceholder: 'Nombre',
-        surnamePlaceholder: 'Apellido',
-        validationMsg: 'Por favor, rellena nombre y apellido',
-        msgPerfect: '¡Estu...pendo! ¡Puntuación perfecta!',
-        msg80: 'Casi lo logras. ¡Sigue practicando!',
-        msg50: 'Esto no está listo; aún puedes hacerlo mejor',
-        msg0: 'Vaya desastre... ¿Seguro que has estudiado?'
-    },
-    en: {
-        startTitle: 'The Iberian Peninsula at the Beginning of the Ancient Age',
-        startSubtitle: 'Discover the history of this period in the Iberian Peninsula',
-        startAdvice: 'At the beginning of the <span class="highlight-keyword">Ancient Age</span>, the peninsula was occupied by <span class="highlight-keyword">indigenous</span> peoples, then came the <span class="highlight-keyword">Tartessians</span> and later the <span class="highlight-keyword">colonisers</span> arrived.',
-        startBtn: 'Start',
-        summaryTitle: 'The Iberian Peninsula at the Beginning of the Ancient Age',
-        continueBtn: 'Continue',
-        hofTitle: 'Best scores',
-        hofPos: 'Position', hofName: 'Name', hofPoints: 'Points', hofTime: 'Time',
-        game1Title: 'The Peninsula at the Beginning of the Ancient Age',
-        game2Title: 'Match: Beginnings of the Ancient Age',
-        game3Title: 'Put these peoples in chronological order',
-        checkBtn: 'Check',
-        finalTitle: 'The Iberian Peninsula at the Beginning of the Ancient Age',
-        scoreLabel: 'Score:',
-        timeLabel: 'Time:',
-        backBtn: 'Back to menu',
-        modalTitle: 'Game Over!',
-        modalTimeLabel: 'Your time:',
-        modalSave: 'Save',
-        modalCancel: 'Cancel',
-        namePlaceholder: 'Name',
-        surnamePlaceholder: 'Surname',
-        validationMsg: 'Please fill in name and surname',
-        msgPerfect: 'Fan-tas-tic! Perfect score!',
-        msg80: 'Almost there. Keep practising!',
-        msg50: 'Not quite ready; you can still do better',
-        msg0: 'What a disaster... Did you really study?'
-    }
-};
-
-/* ====================================================
-   VARIABLES GLOBALES
-===================================================== */
-let currentLang = 'es';
-let isMuted = false;
-let startTime = 0;
-let timerInterval = null;
-let totalErrors = 0;
-let currentScreen = 'start';
-let isHofLoading = false;
-let lastElapsedSeconds = 0;
-let pendingSpeakTimeout = null;
-
-// Variables Juego 1 (Test)
-let currentQuestions = [];
-let currentQuestionIndex = 0;
-
-// Variables Juego 2 (Emparejar)
-let game2Matches = 0;
-let game2SelectedCard = null;
-
-// Variables Juego 3 (Ordenar)
-let game3Shuffled = [];
-let game3Done = false;
-
-/* ====================================================
-   SISTEMA DE AUDIO Y TTS
-===================================================== */
-function unlockAudioContext() {
-    try {
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        if (audioCtx.state === 'suspended') audioCtx.resume();
-        const buf = audioCtx.createBuffer(1,1,22050);
-        const src = audioCtx.createBufferSource();
-        src.buffer = buf;
-        src.connect(audioCtx.destination);
-        src.start(0);
-    } catch(e) {}
-}
-
-function forceInitTTS() {
-    try {
-        const u = new SpeechSynthesisUtterance('');
-        window.speechSynthesis.speak(u);
-        window.speechSynthesis.cancel();
-    } catch(e) {}
-}
-
-function safeCancelSpeech() {
-    try { window.speechSynthesis.cancel(); } catch(e) {}
-    if (pendingSpeakTimeout) { clearTimeout(pendingSpeakTimeout); pendingSpeakTimeout = null; }
-}
-
-function getBestVoice(lang) {
-    try {
-        const voices = window.speechSynthesis.getVoices();
-        if (!voices.length) return null;
-        const prefer = lang === 'es' ? ['Google español','Natural','Microsoft'] : ['Google UK','Natural','Microsoft'];
-        for (let p of prefer) {
-            for (let v of voices) {
-                if (v.name.includes(p) && v.lang.startsWith(lang)) return v;
-            }
-        }
-        return voices.find(v => v.lang.startsWith(lang)) || voices[0];
-    } catch(e) { return null; }
-}
-
-function speakText(text, lang) {
-    safeCancelSpeech();
-    if (isMuted) return;
-    try {
-        const u = new SpeechSynthesisUtterance(text);
-        u.lang = lang === 'es' ? 'es-ES' : 'en-GB';
-        u.voice = getBestVoice(lang);
-        u.rate = 0.8;
-        window.speechSynthesis.speak(u);
-    } catch(e) {}
-}
-
-function playAudio(url) {
-    if (isMuted) return;
-    const audio = new Audio(url);
-    audio.play().catch(e => console.log('Audio error:', e));
-}
-
-/* ====================================================
-   SISTEMA DE SONIDOS
-===================================================== */
-const sounds = {
-    correcto: 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Correcto.mp3',
-    error: 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Error.mp3',
-    victoria: 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Termin%C3%A9.mp3',
-    completado: 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Completado.mp3',
-    tap: 'https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Tap.mp3'
-};
-
-function playSound(soundName) {
-    if (isMuted) return;
-    playAudio(sounds[soundName]);
-}
-
-/* ====================================================
-   SELECTOR DE IDIOMA
-===================================================== */
-document.querySelectorAll('.lang-flag-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        document.querySelectorAll('.lang-flag-btn').forEach(b => b.classList.remove('active-lang'));
-        btn.classList.add('active-lang');
-        currentLang = btn.dataset.lang;
-        document.documentElement.lang = currentLang;
-        applyLanguage(currentLang);
-    });
-});
-
-function applyLanguage(lang) {
-    safeCancelSpeech();
-    const t = i18n[lang];
-    document.getElementById('startTitle').innerHTML = t.startTitle;
-    document.getElementById('startSubtitle').innerHTML = t.startSubtitle;
-    document.getElementById('startAdvice').innerHTML = t.startAdvice;
-    document.getElementById('playBtn').innerHTML = t.startBtn;
-    document.getElementById('summaryTitle').innerHTML = t.summaryTitle;
-    document.getElementById('summaryIntro').innerHTML = summaryIntroText[lang];
-    document.getElementById('continueBtn').innerHTML = t.continueBtn;
-    document.getElementById('game1Title').innerHTML = t.game1Title;
-    document.getElementById('game2Title').innerHTML = t.game2Title;
-    document.getElementById('game3Title').innerHTML = t.game3Title;
-    document.getElementById('checkPhasesBtn').innerHTML = t.checkBtn;
-    document.getElementById('finalTitle').innerHTML = t.finalTitle;
-    document.getElementById('scoreLabel').innerHTML = t.scoreLabel;
-    document.getElementById('backBtn').innerHTML = t.backBtn;
-    document.getElementById('hofTitle').innerHTML = t.hofTitle;
-    document.getElementById('hofPos').innerHTML = t.hofPos;
-    document.getElementById('hofName').innerHTML = t.hofName;
-    document.getElementById('hofPoints').innerHTML = t.hofPoints;
-    document.getElementById('hofTime').innerHTML = t.hofTime;
-    document.getElementById('modalTitle').innerHTML = t.modalTitle;
-    const currentModalTimeEl = document.getElementById('modalTime');
-    const currentModalTime = currentModalTimeEl ? currentModalTimeEl.textContent : '00:00.00';
-    document.getElementById('modalTimeLabel').innerHTML = t.modalTimeLabel + ' <span id="modalTime">' + currentModalTime + '</span>';
-    document.getElementById('submitScoreBtn').innerHTML = t.modalSave;
-    document.getElementById('discardScoreBtn').innerHTML = t.modalCancel;
-    document.getElementById('playerName').placeholder = t.namePlaceholder;
-    document.getElementById('playerSurname').placeholder = t.surnamePlaceholder;
-
-    if (currentScreen === 'summary') {
-        buildSummary();
-    } else if (currentScreen === 'game1') {
-        if (currentQuestionIndex < currentQuestions.length) {
-            loadQuestion();
-        }
-    } else if (currentScreen === 'game2') {
-        buildMatchCards();
-    } else if (currentScreen === 'game3') {
-        buildPhases();
-    }
-}
-
-/* ====================================================
-   BOTÓN SILENCIO
-===================================================== */
-document.getElementById('muteBtn').addEventListener('click', () => {
-    isMuted = !isMuted;
-    const btn = document.getElementById('muteBtn');
-    if (isMuted) {
-        safeCancelSpeech();
-        btn.classList.add('muted');
-        btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>';
-    } else {
-        btn.classList.remove('muted');
-        btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 3.54a9 9 0 0 1 0 12.73M19.07 4.93a13 13 0 0 1 0 14.14"></path></svg>';
-        playSound('tap');
-    }
-});
-
-/* ====================================================
-   PANTALLA INICIO
-===================================================== */
-document.getElementById('playBtn').addEventListener('click', () => {
-    playSound('tap');
-    unlockAudioContext();
-    forceInitTTS();
-    showScreen('summary');
-    startTimer();
-});
-
-/* ====================================================
-   PANTALLA RESUMEN (Bloques)
-===================================================== */
-function buildSummary() {
-    const container = document.getElementById('summaryContainer');
-    if (!container) return;
-    container.innerHTML = '';
-    const data = summaryData[currentLang];
-    const keywords = summaryKeywords[currentLang];
-
-    const highlightKeywords = (text) => {
-        let result = text;
-        keywords.forEach(kw => {
-            const regex = new RegExp(`\\b${kw}\\b`, 'gi');
-            result = result.replace(regex, `<span class="keyword">${kw}</span>`);
-        });
-        return result;
     };
 
-    const blockColors = ['block-blue', 'block-orange', 'block-yellow'];
-
-    const blocksHTML = data.map((section, idx) => {
-        const itemsHTML = section.items.map((text) => `<li>${highlightKeywords(text)}</li>`).join('');
-        const colorClass = blockColors[idx % blockColors.length];
-        return `
-            <div class="summary-block ${colorClass}">
-                <div class="summary-block-title">${section.heading}</div>
-                <ul class="summary-list">${itemsHTML}</ul>
-            </div>
-        `;
-    }).join('');
-
-    container.innerHTML = blocksHTML;
-}
-
-document.getElementById('continueBtn').addEventListener('click', () => {
-    playSound('tap');
-    showScreen('game1');
-    initGame1();
-});
-
-/* ====================================================
-   JUEGO 1: TEST
-===================================================== */
-function shuffleArray(arr) {
-    const result = [...arr];
-    for (let i = result.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [result[i], result[j]] = [result[j], result[i]];
-    }
-    return result;
-}
-
-function initGame1() {
-    totalErrors = 0;
-    currentQuestionIndex = 0;
-    document.getElementById('trophyDiv').classList.add('hidden');
-
-    currentQuestions = shuffleArray(testQuestionsByLang[currentLang]).map(q => ({
-        q: q.q,
-        options: shuffleArray(q.options)
-    }));
-
-    updateProgress();
-    loadQuestion();
-}
-
-function loadQuestion() {
-    const currentQ = currentQuestions[currentQuestionIndex];
-    document.getElementById('questionText').textContent = currentQ.q;
-
-    const optionsContainer = document.getElementById('optionsContainer');
-    optionsContainer.innerHTML = '';
-    currentQ.options.forEach(opt => {
-        const btn = document.createElement('button');
-        btn.className = 'option-btn';
-        btn.textContent = opt.text;
-        btn.onclick = () => handleAnswer(btn, opt.correct);
-        optionsContainer.appendChild(btn);
-    });
-
-    updateProgress();
-    pendingSpeakTimeout = setTimeout(() => { speakText(currentQ.q, currentLang); }, 300);
-}
-
-document.getElementById('btnPlayQuestion').addEventListener('click', () => {
-    if (currentQuestionIndex < currentQuestions.length) {
-        speakText(currentQuestions[currentQuestionIndex].q, currentLang);
-    }
-});
-
-function handleAnswer(btnElement, isCorrect) {
-    safeCancelSpeech();
-    if (isCorrect) {
-        safeCancelSpeech();
-        const allBtns = document.querySelectorAll('.option-btn');
-        allBtns.forEach(b => b.disabled = true);
-        btnElement.classList.add('correct');
-        playSound('correcto');
-
-        setTimeout(() => {
-            currentQuestionIndex++;
-            updateProgress();
-            if (currentQuestionIndex < currentQuestions.length) {
-                loadQuestion();
-            } else {
-                endGame1();
-            }
-        }, 300);
-    } else {
-        safeCancelSpeech();
-        totalErrors++;
-        btnElement.classList.add('wrong');
-        btnElement.disabled = true;
-        playSound('error');
-
-        setTimeout(() => {
-            btnElement.classList.remove('wrong');
-        }, 600);
-    }
-}
-
-function endGame1() {
-    safeCancelSpeech();
-    playSound('completado');
-    setTimeout(() => {
-        showScreen('game2');
-        initGame2();
-    }, 1000);
-}
-
-/* ====================================================
-   JUEGO 2: EMPAREJAR
-===================================================== */
-function initGame2() {
-    game2Matches = 0;
-    game2SelectedCard = null;
-    updateProgress();
-    buildMatchCards();
-}
-
-function buildMatchCards() {
-    const container = document.getElementById('game2Container');
-    container.innerHTML = '';
-
-    const data = game2Data[currentLang];
-    const indices = Array.from({ length: data.length }, (_, i) => i);
-
-    const termOrder = shuffleArray(indices);
-    const defOrder = shuffleArray(indices);
-
-    for (let row = 0; row < data.length; row++) {
-        container.appendChild(createMatchCard(termOrder[row], 'term'));
-        container.appendChild(createMatchCard(defOrder[row], 'def'));
-    }
-
-    container.onclick = handleMatchCardClick;
-}
-
-function createMatchCard(origIndex, type) {
-    const card = document.createElement('div');
-    card.className = 'memory-card';
-    card.dataset.origIndex = origIndex;
-    card.dataset.type = type;
-    const item = game2Data[currentLang][origIndex];
-    card.textContent = type === 'term' ? item.term : item.def;
-    return card;
-}
-
-function handleMatchCardClick(e) {
-    const target = e.target.closest('.memory-card');
-    if (!target || target.classList.contains('matched')) return;
-
-    if (!game2SelectedCard) {
-        playSound('tap');
-        game2SelectedCard = target;
-        game2SelectedCard.classList.add('selected');
-        return;
-    }
-
-    if (target === game2SelectedCard) {
-        game2SelectedCard.classList.remove('selected');
-        game2SelectedCard = null;
-        return;
-    }
-
-    if (target.dataset.type === game2SelectedCard.dataset.type) {
-        game2SelectedCard.classList.remove('selected');
-        playSound('tap');
-        game2SelectedCard = target;
-        game2SelectedCard.classList.add('selected');
-        return;
-    }
-
-    const prevCard = game2SelectedCard;
-    const idA = prevCard.dataset.origIndex;
-    const idB = target.dataset.origIndex;
-
-    if (idA === idB) {
-        playSound('correcto');
-        prevCard.classList.remove('selected');
-        prevCard.classList.add('matched');
-        target.classList.add('matched');
-        game2SelectedCard = null;
-        game2Matches++;
-        updateProgress();
-        if (game2Matches === MATCH_TOTAL) {
-            setTimeout(() => {
-                playSound('completado');
-                setTimeout(() => endGame2(), 1000);
-            }, 500);
+    const gameDataI18n={
+        en:{
+            pairs:[
+                {stage:'paleo',text:'Palaeolithic'},{stage:'paleo',text:'Human beings appear'},
+                {stage:'neo',text:'Neolithic'},{stage:'neo',text:'Agriculture and livestock farming'},
+                {stage:'metals',text:'Metal Ages'},{stage:'metals',text:'Use of metals'},
+                {stage:'antigua',text:'Ancient Age'},{stage:'antigua',text:'Writing'},
+                {stage:'media',text:'Middle Ages'},{stage:'media',text:'End of the Roman Empire'},
+                {stage:'moderna',text:'Modern Age'},{stage:'moderna',text:'Discovery of America'},
+                {stage:'contemp',text:'Contemporary Age'},{stage:'contemp',text:'French Revolution'}
+            ],
+            stages:['Palaeolithic','Neolithic','Metal Ages','Ancient Age','Middle Ages','Modern Age','Contemporary Age'],
+            events:['Human beings appear','Agriculture and livestock farming','Use of metals','Writing','End of the Roman Empire','Discovery of America','French Revolution']
+        },
+        es:{
+            pairs:[
+                {stage:'paleo',text:'Paleolítico'},{stage:'paleo',text:'Aparece el ser humano'},
+                {stage:'neo',text:'Neolítico'},{stage:'neo',text:'Agricultura y ganadería'},
+                {stage:'metals',text:'Edad de los Metales'},{stage:'metals',text:'Uso de metales'},
+                {stage:'antigua',text:'Edad Antigua'},{stage:'antigua',text:'La escritura'},
+                {stage:'media',text:'Edad Media'},{stage:'media',text:'Fin del imperio romano'},
+                {stage:'moderna',text:'Edad Moderna'},{stage:'moderna',text:'Descubrimiento de América'},
+                {stage:'contemp',text:'Edad Contemporánea'},{stage:'contemp',text:'Revolución francesa'}
+            ],
+            stages:['Paleolítico','Neolítico','Edad de los Metales','Edad Antigua','Edad Media','Edad Moderna','Edad Contemporánea'],
+            events:['Ser humano','Agricultura y ganadería','Uso de metales','La escritura','Fin del imperio romano','Descubrimiento de América','Revolución Francesa']
         }
-    } else {
-        totalErrors++;
-        playSound('error');
-        prevCard.classList.remove('selected');
-        prevCard.classList.add('flash-error');
-        target.classList.add('flash-error');
-        game2SelectedCard = null;
-        setTimeout(() => {
-            prevCard.classList.remove('flash-error');
-            target.classList.remove('flash-error');
-        }, 400);
+    };
+
+    const game4Images=[
+        {stage:'paleo',img:'https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO3/Historia/Edades/Paleolitico.png'},
+        {stage:'neo',img:'https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO3/Historia/Edades/Neolitico.png'},
+        {stage:'metals',img:'https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO3/Historia/Edades/Metales.png'},
+        {stage:'antigua',img:'https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO3/Historia/Edades/Antigua.png'},
+        {stage:'media',img:'https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO3/Historia/Edades/Media.png'},
+        {stage:'moderna',img:'https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO3/Historia/Edades/Moderna.png'},
+        {stage:'contemp',img:'https://raw.githubusercontent.com/ManuelVS8/Audios-juegos-SCIENCE/refs/heads/main/C_MEDIO3/Historia/Edades/Contemporanea.png'}
+    ];
+
+    const svgSoundOn='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>';
+    const svgSoundOff='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>';
+
+    function toggleSound(){if(isMuted){isMuted=false;soundEnabled=true;document.getElementById('muteBtn').innerHTML=svgSoundOn;document.getElementById('muteBtn').classList.remove('muted');reproducirSonidoTap();}else{isMuted=true;soundEnabled=false;document.getElementById('muteBtn').innerHTML=svgSoundOff;document.getElementById('muteBtn').classList.add('muted');}}
+    function preloadImages(u){[...new Set(u)].forEach(u=>{const i=new Image();i.src=u;});}
+    function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+    function startGlobalTimer(){stopTimer();startTime=Date.now();elapsed=0;timerInterval=setInterval(()=>{elapsed=(Date.now()-startTime)/1000;const t=formatTime(elapsed);['timerGame1','timerGame2','timerGame3','timerGame4'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=t;});},100);}
+    function stopTimer(){if(timerInterval){clearInterval(timerInterval);timerInterval=null;}}
+    function formatTime(s){const m=Math.floor(s/60).toString().padStart(2,'0');const sec=Math.floor(s%60).toString().padStart(2,'0');const ms=Math.round((s%1)*10);return`${m}:${sec}.${ms}`;}
+    function updateProgress(id,p){document.getElementById(id).style.width=p+'%';}
+    function shuffle(a){let c=a.length,r;while(c!=0){r=Math.floor(Math.random()*c);c--;[a[c],a[r]]=[a[r],a[c]];}return a;}
+    function calcularPuntuacionFinal(){return Math.max(0,Math.round(100-((totalAttempts-MIN_ATTEMPTS)*(100/MIN_ATTEMPTS))));}
+
+    function applyLanguage(lang){
+        currentLang=lang;document.documentElement.lang=lang;
+        document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n');const t=i18n[lang][k];if(t!==undefined)el.innerHTML=t;});
+        document.getElementById('langEN').classList.toggle('active-lang',lang==='en');
+        document.getElementById('langES').classList.toggle('active-lang',lang==='es');
+        document.title=i18n[lang].startTitle;
+        if(activeGame==='game1'){
+            const cards=document.querySelectorAll('#game1Grid .game1-card');
+            cards.forEach(c=>{if(!c.classList.contains('matched')){const o=parseInt(c.dataset.origIndex);if(!isNaN(o))c.innerHTML=gameDataI18n[lang].pairs[o].text;}});
+        }
+        if(activeGame==='game2'||activeGame==='game3'){
+            const wId=activeGame==='game2'?'game2Wrapper':'game3Wrapper';
+            const arrKey2=activeGame==='game2'?'stages':'events';
+            const progressId2=activeGame==='game2'?'progressFillGame2':'progressFillGame3';
+            const nextFunc2=activeGame==='game2'?initGame3:initGame4;
+            renderOrderingList(wId,arrKey2,nextFunc2,progressId2,activeGame);
+            const cb=document.querySelector(`#${wId} .check-btn-wrapper .btn-primary`);
+            if(cb)cb.textContent=i18n[lang].checkBtn;
+        }
+        if(activeGame==='game4'){
+            renderGame4Buttons();
+        }
     }
-}
+    document.getElementById('langEN').onclick=()=>{reproducirSonidoTap();applyLanguage('en');};
+    document.getElementById('langES').onclick=()=>{reproducirSonidoTap();applyLanguage('es');};
 
-function endGame2() {
-    setTimeout(() => {
-        showScreen('game3');
-        initGame3();
-    }, 300);
-}
+    document.getElementById('startBtn').onclick=()=>{reproducirSonidoTap();unlockAudioContext();forceInitTTS();showScreen('summaryScreen');};
+    document.getElementById('playBtn').onclick=()=>{reproducirSonidoTap();totalAttempts=0;startGlobalTimer();preloadImages(game4Images.map(d=>d.img));initGame1();};
 
-/* ====================================================
-   JUEGO 3: ORDENAR
-===================================================== */
-function initGame3() {
-    game3Done = false;
-    game3Shuffled = shuffleArray([...Array(ORDER_TOTAL).keys()]);
-    document.getElementById('checkPhasesBtn').disabled = false;
-    buildPhases();
-    updateProgress();
-}
+    /* ====== GAME 1: MATCHING ====== */
+    let g1Selected=null,g1Matched=0;const totalPairs=7;
 
-function buildPhases() {
-    const container = document.getElementById('phasesContainer');
-    container.innerHTML = '';
-    game3Shuffled.forEach((idx, pos) => {
-        const card = document.createElement('div');
-        card.className = 'phase-card';
-        card.dataset.origIndex = idx;
-        card.dataset.position = pos;
-        const text = game3Data[currentLang][idx];
-        card.innerHTML = `
-            <div class="phase-text">${text}</div>
-            <div class="phase-controls">
-                <button class="phase-btn up-btn" data-pos="${pos}">▲</button>
-                <button class="phase-btn down-btn" data-pos="${pos}">▼</button>
-            </div>
-        `;
-        container.appendChild(card);
-    });
-    updatePhaseButtons();
-}
-
-function updatePhaseButtons() {
-    const cards = document.querySelectorAll('.phase-card');
-    cards.forEach((card, i) => {
-        const upBtn = card.querySelector('.up-btn');
-        const downBtn = card.querySelector('.down-btn');
-        upBtn.disabled = i === 0;
-        downBtn.disabled = i === cards.length - 1;
-        upBtn.addEventListener('click', () => movePhase(i, -1));
-        downBtn.addEventListener('click', () => movePhase(i, 1));
-    });
-}
-
-function movePhase(pos, dir) {
-    playSound('tap');
-    const newPos = pos + dir;
-    if (newPos < 0 || newPos >= game3Shuffled.length) return;
-    const temp = game3Shuffled[pos];
-    game3Shuffled[pos] = game3Shuffled[newPos];
-    game3Shuffled[newPos] = temp;
-    buildPhases();
-}
-
-document.getElementById('checkPhasesBtn').addEventListener('click', () => {
-    playSound('tap');
-    const cards = document.querySelectorAll('.phase-card');
-    let allCorrect = true;
-    cards.forEach((card, i) => {
-        const isCorrect = game3Shuffled[i] === i;
-        if (isCorrect) {
-            card.classList.add('correct');
-            card.classList.remove('incorrect');
+    function initGame1(){
+        activeGame='game1';showScreen('game1Screen');g1Selected=null;g1Matched=0;updateProgress('progressFillGame1',0);
+        const grid=document.getElementById('game1Grid');grid.innerHTML='';
+        const colL=document.createElement('div');colL.className='game1-col-left';colL.style.display='flex';colL.style.flexDirection='column';colL.style.gap='12px';
+        const colR=document.createElement('div');colR.className='game1-col-right';colR.style.display='flex';colR.style.flexDirection='column';colR.style.gap='12px';
+        const pairs=gameDataI18n[currentLang].pairs;
+        const idxL=shuffle([0,2,4,6,8,10,12]);const idxR=shuffle([1,3,5,7,9,11,13]);
+        idxL.forEach(i=>{const c=document.createElement('div');c.className='game1-card';c.dataset.pairId=Math.floor(i/2);c.dataset.origIndex=i;c.dataset.col='left';c.innerHTML=pairs[i].text;c.onclick=()=>handleG1Click(c);colL.appendChild(c);});
+        idxR.forEach(i=>{const c=document.createElement('div');c.className='game1-card';c.dataset.pairId=Math.floor(i/2);c.dataset.origIndex=i;c.dataset.col='right';c.innerHTML=pairs[i].text;c.onclick=()=>handleG1Click(c);colR.appendChild(c);});
+        grid.appendChild(colL);grid.appendChild(colR);
+    }
+    function handleG1Click(card){
+        if(card.classList.contains('matched'))return;
+        window.speechSynthesis.cancel();
+        if(!g1Selected){
+            g1Selected=card;card.classList.add('selected');reproducirSonidoTap();
         } else {
-            card.classList.add('incorrect');
-            card.classList.remove('correct');
-            card.classList.add('shake');
-            totalErrors++;
-            allCorrect = false;
-        }
-    });
-    updateProgress();
-    if (allCorrect) {
-        game3Done = true;
-        updateProgress();
-        playSound('correcto');
-        setTimeout(() => {
-            playSound('completado');
-            setTimeout(() => endGame3(), 1000);
-        }, 500);
-    } else {
-        playSound('error');
-        setTimeout(() => {
-            cards.forEach(card => {
-                card.classList.remove('correct', 'incorrect', 'shake');
-            });
-        }, 1500);
-    }
-});
-
-function endGame3() {
-    setTimeout(() => { endGame(); }, 300);
-}
-
-/* ====================================================
-   FUNCIONES DE NAVEGACIÓN
-===================================================== */
-function showScreen(screen) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    currentScreen = screen;
-    if (screen === 'start') {
-        document.getElementById('startScreen').classList.add('active');
-        loadHallOfFame();
-    } else if (screen === 'summary') {
-        document.getElementById('summaryScreen').classList.add('active');
-        buildSummary();
-    } else if (screen === 'game1') {
-        document.getElementById('game1Screen').classList.add('active');
-    } else if (screen === 'game2') {
-        document.getElementById('game2Screen').classList.add('active');
-    } else if (screen === 'game3') {
-        document.getElementById('game3Screen').classList.add('active');
-    } else if (screen === 'final') {
-        document.getElementById('finalScreen').classList.add('active');
-    }
-}
-
-/* ====================================================
-   TIMER
-===================================================== */
-function startTimer() {
-    startTime = Date.now();
-    timerInterval = setInterval(() => {
-        const elapsed = Date.now() - startTime;
-        document.getElementById('timerDisplay').textContent = formatTime(elapsed);
-        document.getElementById('timerDisplay2').textContent = formatTime(elapsed);
-        document.getElementById('timerDisplay3').textContent = formatTime(elapsed);
-    }, 10);
-}
-
-function formatTime(ms) {
-    const totalCentisecs = Math.floor(ms / 10);
-    const centisecs = totalCentisecs % 100;
-    const totalSecs = Math.floor(totalCentisecs / 100);
-    const sec = totalSecs % 60;
-    const mins = Math.floor(totalSecs / 60);
-    return `${mins.toString().padStart(2,'0')}:${sec.toString().padStart(2,'0')}.${centisecs.toString().padStart(2,'0')}`;
-}
-
-function formatTimeFromSeconds(value) {
-    const secondsNum = parseFloat(value);
-    if (isNaN(secondsNum)) return '00:00.00';
-    return formatTime(secondsNum * 1000);
-}
-
-function getElapsedSeconds() {
-    return (Date.now() - startTime) / 1000;
-}
-
-/* ====================================================
-   PROGRESO
-===================================================== */
-function updateProgress() {
-    const game1DoneCount = currentQuestionIndex;
-    const game3DoneCount = game3Done ? ORDER_TOTAL : 0;
-    const completed = game1DoneCount + game2Matches + game3DoneCount;
-    const percent = Math.min(100, (completed / TOTAL_INTERACTIONS) * 100);
-    ['progressFill', 'progressFill2', 'progressFill3'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.style.width = percent + '%';
-    });
-}
-
-/* ====================================================
-   PANTALLA FINAL
-===================================================== */
-function endGame() {
-    clearInterval(timerInterval);
-    safeCancelSpeech();
-    const score = calcularPuntuacionFinal();
-    const time = getElapsedSeconds();
-    lastElapsedSeconds = time;
-    showFinalScreen(score, time);
-    showSubmitModal(time, score);
-}
-
-function calcularPuntuacionFinal() {
-    let puntuacion = 100 - (totalErrors * (100 / TOTAL_INTERACTIONS));
-    puntuacion = Math.round(puntuacion);
-    puntuacion = Math.max(0, Math.min(100, puntuacion));
-    return puntuacion;
-}
-
-function showFinalScreen(score, time) {
-    const t = i18n[currentLang];
-    document.getElementById('finalScore').innerHTML = score;
-
-    let msg = t.msg0;
-    if (score === 100) msg = t.msgPerfect;
-    else if (score >= 80) msg = t.msg80;
-    else if (score >= 50) msg = t.msg50;
-
-    document.getElementById('finalMessage').innerHTML = msg;
-    document.getElementById('finalTime').innerHTML = `${t.timeLabel} ${formatTime(time * 1000)}`;
-
-    if (score === 100) {
-        document.getElementById('trophyDiv').classList.remove('hidden');
-        playSound('victoria');
-        createConfetti();
-    } else {
-        playSound('completado');
-    }
-
-    showScreen('final');
-}
-
-function createConfetti() {
-    for (let i = 0; i < 100; i++) {
-        setTimeout(() => {
-            const c = document.createElement('div');
-            c.className = 'confetti';
-            const x = Math.random() * window.innerWidth;
-            const tx = (Math.random() - 0.5) * 200;
-            c.style.left = x + 'px'; c.style.top = '-10px';
-            c.style.backgroundColor = ['#ff595e', '#1982c4', '#6a4c93', '#ffca3a', '#8ac926'][Math.floor(Math.random() * 5)];
-            c.style.setProperty('--tx', tx + 'px');
-            c.style.setProperty('--ty', window.innerHeight + 20 + 'px');
-            document.body.appendChild(c);
-            setTimeout(() => c.remove(), 3000);
-        }, i * 20);
-    }
-}
-
-/* ====================================================
-   HALL OF FAME
-===================================================== */
-function loadHallOfFame() {
-    if (isHofLoading) return;
-    isHofLoading = true;
-    const tableBody = document.getElementById('hofTableBody');
-    tableBody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-loading">Cargando puntuaciones...</td></tr>';
-
-    const url = `${APP_SCRIPT_URL}?action=read&sheet=${SHEET_NAME}`;
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 8000);
-
-    fetch(url, { signal: controller.signal })
-        .then(r => {
-            if (!r.ok) throw new Error(`HTTP ${r.status}`);
-            return r.json();
-        })
-        .then(data => {
-            clearTimeout(timeoutId);
-            isHofLoading = false;
-            if (data.status === 'success' && data.data && data.data.length) {
-                tableBody.innerHTML = data.data.slice(0,10).map((row, i) => `
-                    <tr>
-                        <td>${i+1}</td>
-                        <td>${row.name} ${row.surname}</td>
-                        <td>${row.score}</td>
-                        <td>${formatTimeFromSeconds(row.time)}</td>
-                    </tr>
-                `).join('');
+            if(g1Selected.dataset.col===card.dataset.col){g1Selected.classList.remove('selected');g1Selected=card;card.classList.add('selected');reproducirSonidoTap();return;}
+            totalAttempts++;
+            if(g1Selected.dataset.pairId===card.dataset.pairId){
+                reproducirSonidoCorrecto();g1Selected.classList.remove('selected');g1Selected.classList.add('matched');g1Selected.onclick=null;
+                card.classList.remove('selected');card.classList.add('matched');card.onclick=null;
+                g1Matched++;updateProgress('progressFillGame1',(g1Matched/totalPairs)*100);
+                if(g1Matched===totalPairs)setTimeout(initGame2,800);
+                g1Selected=null;
             } else {
-                tableBody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-loading">¡Sé el primero en guardar tu puntuación!</td></tr>';
+                reproducirSonidoError();const prev=g1Selected;prev.classList.add('flash-error');card.classList.add('flash-error');
+                setTimeout(()=>{prev.classList.remove('selected','flash-error');card.classList.remove('flash-error');g1Selected=null;},400);
             }
-        })
-        .catch(err => {
-            clearTimeout(timeoutId);
-            isHofLoading = false;
-            console.error('Error cargando Hall of Fame:', err);
-            tableBody.innerHTML = '<tr><td colspan="4" class="hall-of-fame-error">Error al cargar puntuaciones</td></tr>';
-        });
-}
-
-function showSubmitModal(time, score) {
-    const t = i18n[currentLang];
-    document.getElementById('modalTitle').innerHTML = t.modalTitle;
-    document.getElementById('modalTimeLabel').innerHTML = t.modalTimeLabel + ' <span id="modalTime">' + formatTime(time * 1000) + '</span>';
-    document.getElementById('submitScoreBtn').innerHTML = t.modalSave;
-    document.getElementById('discardScoreBtn').innerHTML = t.modalCancel;
-    document.getElementById('playerName').value = '';
-    document.getElementById('playerSurname').value = '';
-    document.getElementById('modalValidationMsg').classList.add('hidden');
-    document.getElementById('submitModal').classList.add('active');
-    document.getElementById('playerName').focus();
-}
-
-let isSubmittingScore = false;
-
-function submitScore() {
-    if (isSubmittingScore) return;
-
-    const name = document.getElementById('playerName').value.trim();
-    const surname = document.getElementById('playerSurname').value.trim();
-    const score = parseInt(document.getElementById('finalScore').innerHTML);
-    const time = Math.round(lastElapsedSeconds * 100) / 100;
-    const validationMsg = document.getElementById('modalValidationMsg');
-
-    if (!name || !surname) {
-        validationMsg.textContent = i18n[currentLang].validationMsg;
-        validationMsg.classList.remove('hidden');
-        validationMsg.classList.remove('shake');
-        void validationMsg.offsetWidth;
-        validationMsg.classList.add('shake');
-        playSound('error');
-        return;
+        }
     }
-    validationMsg.classList.add('hidden');
 
-    isSubmittingScore = true;
-    const btn = document.getElementById('submitScoreBtn');
-    btn.innerHTML = 'Enviando...';
-    const payload = { sheet: SHEET_NAME, action: 'write', data: { score, time, name, surname } };
+    /* ====== GAME 2 & 3: ORDERING ====== */
+    let g2Items=[],g3Items=[],g2Locked=false,g3Locked=false;
+    function renderOrderingList(wrapperId,arrKey,nextFunc,progressId,gameVal){
+        const wrapper=document.getElementById(wrapperId);
+        const arr=gameVal==='game2'?g2Items:g3Items;
+        const list=wrapper.querySelector('.ordering-list')||document.createElement('div');
+        list.className='ordering-list';list.innerHTML='';
+        arr.forEach((text,i)=>{
+            const item=document.createElement('div');item.className='ordering-item';
+            const card=document.createElement('div');card.className='ordering-card';card.dataset.origIndex=gameDataI18n[currentLang][arrKey].indexOf(text);card.textContent=text;
+            const btnGroup=document.createElement('div');btnGroup.className='arrow-btns';
+            const upBtn=document.createElement('button');upBtn.className='arrow-btn';upBtn.innerHTML='▲';upBtn.disabled=(i===0);
+            upBtn.onclick=()=>moveItem(wrapperId,arrKey,nextFunc,progressId,i,-1,gameVal);
+            const downBtn=document.createElement('button');downBtn.className='arrow-btn';downBtn.innerHTML='▼';downBtn.disabled=(i===arr.length-1);
+            downBtn.onclick=()=>moveItem(wrapperId,arrKey,nextFunc,progressId,i,1,gameVal);
+            btnGroup.appendChild(upBtn);btnGroup.appendChild(downBtn);
+            item.appendChild(card);item.appendChild(btnGroup);list.appendChild(item);
+        });
+        if(!wrapper.querySelector('.ordering-list'))wrapper.insertBefore(list,wrapper.querySelector('.check-btn-wrapper'));
+    }
+    function initOrderingGame(wrapperId,arrKey,nextFunc,progressId,gameVal){
+        activeGame=gameVal;showScreen(wrapperId.replace('Wrapper','Screen'));
+        const wrapper=document.getElementById(wrapperId);wrapper.innerHTML='';
+        const arr=shuffle([...gameDataI18n[currentLang][arrKey]]);
+        if(gameVal==='game2')g2Items=arr;else g3Items=arr;
+        if(gameVal==='game2')g2Locked=false;else g3Locked=false;
+        updateProgress(progressId,0);
+        const list=document.createElement('div');list.className='ordering-list';wrapper.appendChild(list);
+        const cbDiv=document.createElement('div');cbDiv.className='check-btn-wrapper';
+        const cb=document.createElement('button');cb.className='btn btn-primary';cb.textContent=i18n[currentLang].checkBtn;cb.style.marginTop='.5rem';
+        cb.onclick=()=>checkOrder(wrapperId,arrKey,nextFunc,progressId,gameVal);
+        cbDiv.appendChild(cb);wrapper.appendChild(cbDiv);
+        renderOrderingList(wrapperId,arrKey,nextFunc,progressId,gameVal);
+    }
+    function moveItem(wrapperId,arrKey,nextFunc,progressId,idx,dir,gameVal){
+        if((gameVal==='game2'&&g2Locked)||(gameVal==='game3'&&g3Locked))return;
+        reproducirSonidoTap();
+        const arr=gameVal==='game2'?g2Items:g3Items;
+        const newIdx=idx+dir;if(newIdx<0||newIdx>=arr.length)return;
+        [arr[idx],arr[newIdx]]=[arr[newIdx],arr[idx]];
+        renderOrderingList(wrapperId,arrKey,nextFunc,progressId,gameVal);
+    }
+    function checkOrder(wrapperId,arrKey,nextFunc,progressId,gameVal){
+        if((gameVal==='game2'&&g2Locked)||(gameVal==='game3'&&g3Locked))return;
+        totalAttempts++;if(gameVal==='game2')g2Locked=true;else g3Locked=true;
+        const arr=gameVal==='game2'?g2Items:g3Items;
+        const correctArr=gameDataI18n[currentLang][arrKey];
+        const cards=document.querySelectorAll(`#${wrapperId} .ordering-card`);
+        let allCorrect=true;
+        cards.forEach((c,i)=>{
+            c.classList.remove('correct-highlight','incorrect-highlight');
+            if(arr[i]===correctArr[i])c.classList.add('correct-highlight');
+            else{c.classList.add('incorrect-highlight');allCorrect=false;}
+        });
+        if(allCorrect){
+            updateProgress(progressId,100);reproducirSonidoCompletado();setTimeout(nextFunc,1000);
+        } else {
+            reproducirSonidoError();
+            setTimeout(()=>{
+                cards.forEach(c=>c.classList.remove('correct-highlight','incorrect-highlight'));
+                if(gameVal==='game2')g2Locked=false;else g3Locked=false;
+            },1500);
+        }
+    }
+    function initGame2(){initOrderingGame('game2Wrapper','stages',initGame3,'progressFillGame2','game2');}
+    function initGame3(){initOrderingGame('game3Wrapper','events',initGame4,'progressFillGame3','game3');}
 
-    fetch(APP_SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify(payload)
-    }).then(() => {
-        setTimeout(() => {
-            document.getElementById('submitModal').classList.remove('active');
-            btn.innerHTML = i18n[currentLang].modalSave;
-            isSubmittingScore = false;
-            loadHallOfFame();
-        }, 1500);
-    }).catch(e => {
-        console.log('Error:', e);
-        btn.innerHTML = i18n[currentLang].modalSave;
-        isSubmittingScore = false;
-    });
-}
+    /* ====== GAME 4: IMAGES ====== */
+    let g4Items=[],g4Idx=0;const totalItems4=7;let g4Locked=false;
+    const g4BtnDefs=[
+        {stage:'paleo',cssClass:'btn-paleo',i18nKey:'btnPaleo'},
+        {stage:'neo',cssClass:'btn-neo',i18nKey:'btnNeo'},
+        {stage:'metals',cssClass:'btn-metals',i18nKey:'btnMetals'},
+        {stage:'antigua',cssClass:'btn-antigua',i18nKey:'btnAntigua'},
+        {stage:'media',cssClass:'btn-media',i18nKey:'btnMedia'},
+        {stage:'moderna',cssClass:'btn-moderna',i18nKey:'btnModerna'},
+        {stage:'contemp',cssClass:'btn-contemp',i18nKey:'btnContemp'}
+    ];
+    let g4ShuffledDefs=[];
 
-document.getElementById('submitScoreBtn').addEventListener('click', submitScore);
-document.getElementById('discardScoreBtn').addEventListener('click', () => {
-    playSound('tap');
-    document.getElementById('submitModal').classList.remove('active');
-});
+    function renderGame4Buttons(){
+        const container=document.getElementById('game4Buttons');
+        container.innerHTML='';
+        g4ShuffledDefs.forEach(def=>{
+            const btn=document.createElement('button');
+            btn.className=`btn ${def.cssClass}`;
+            btn.textContent=i18n[currentLang][def.i18nKey];
+            btn.onclick=()=>checkGame4(def.stage);
+            container.appendChild(btn);
+        });
+    }
 
-document.getElementById('playerSurname').addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') document.getElementById('submitScoreBtn').click();
-});
+    function initGame4(){
+        activeGame='game4';showScreen('game4Screen');g4Idx=0;g4Locked=false;updateProgress('progressFillGame4',0);
+        g4Items=shuffle([...game4Images]);
+        g4ShuffledDefs=shuffle([...g4BtnDefs]);
+        renderGame4Buttons();
+        loadG4Q();
+    }
+    function loadG4Q(){
+        g4Locked=false;document.getElementById('game4Display').innerHTML=`<img src="${g4Items[g4Idx].img}" alt="History image">`;
+    }
+    function checkGame4(ans){
+        if(g4Locked)return;window.speechSynthesis.cancel();totalAttempts++;
+        if(ans===g4Items[g4Idx].stage){
+            reproducirSonidoCorrecto();g4Locked=true;g4Idx++;updateProgress('progressFillGame4',(g4Idx/totalItems4)*100);
+            if(g4Idx<totalItems4)setTimeout(loadG4Q,200);else setTimeout(finishGame,200);
+        } else {
+            reproducirSonidoError();g4Locked=true;
+            const btns=document.querySelectorAll('#game4Buttons .btn');
+            btns.forEach(b=>{if(b.textContent===i18n[currentLang][g4ShuffledDefs.find(d=>d.stage===ans).i18nKey]){b.style.animation='shake .3s ease-in-out';setTimeout(()=>{b.style.animation='';g4Locked=false;},700);}});
+        }
+    }
 
-document.getElementById('backBtn').addEventListener('click', () => {
-    playSound('tap');
-    showScreen('start');
-});
+    /* ====== FINAL ====== */
+    function finishGame(){
+        window.speechSynthesis.cancel();activeGame=null;stopTimer();finalTimeVal=elapsed;finalScoreVal=calcularPuntuacionFinal();
+        document.getElementById('finalScore').textContent=finalScoreVal;document.getElementById('finalTime').textContent=formatTime(finalTimeVal);
+        const tb=document.getElementById('trophyBox'),msg=document.getElementById('finalMsg'),t=i18n[currentLang];
+        if(finalScoreVal===100){tb.style.display='block';msg.textContent=t.msgPerfect;reproducirSonidoVictoria();createConfetti();}
+        else{tb.style.display='none';msg.textContent=t.msgNoPerfect;reproducirSonidoCompletado();}
+        showScreen('finalScreen');showSubmitModal(finalTimeVal,finalScoreVal);
+    }
+    function createConfetti(){for(let i=0;i<100;i++){setTimeout(()=>{const c=document.createElement('div');c.className='confetti';const x=Math.random()*window.innerWidth;const tx=(Math.random()-.5)*200;c.style.left=x+'px';c.style.top='-10px';c.style.backgroundColor=['#ff595e','#1982c4','#6a4c93','#ffca3a','#8ac926'][Math.floor(Math.random()*5)];c.style.setProperty('--tx',tx+'px');c.style.setProperty('--ty',window.innerHeight+20+'px');document.body.appendChild(c);setTimeout(()=>c.remove(),3000);},i*20);}}
 
-/* ====================================================
-   INICIALIZACIÓN
-===================================================== */
-window.addEventListener('load', () => {
-    applyLanguage(currentLang);
-    buildSummary();
-    loadHallOfFame();
-});
+    /* ====== HOF ====== */
+    let isHofLoading=false;
+    function loadHallOfFame(){
+        if(isHofLoading)return;isHofLoading=true;const tbody=document.getElementById('hofTableBody');
+        tbody.innerHTML='<tr><td colspan="4" class="hall-of-fame-loading">Cargando datos...</td></tr>';
+        const url=`${APP_SCRIPT_URL}?action=read&sheet=${SHEET_NAME}`;
+        const tid=setTimeout(()=>{if(isHofLoading){tbody.innerHTML='<tr><td colspan="4" class="hall-of-fame-error">Error de conexión (Timeout).</td></tr>';isHofLoading=false;}},8000);
+        fetch(url).then(r=>{clearTimeout(tid);if(!r.ok)throw new Error();return r.json();}).then(data=>{
+            if(data.status==='success'&&data.data){
+                const pd=data.data.map(r=>{const g=k=>{for(let x of k){if(r[x]!==undefined&&r[x]!=="")return r[x];}return null;};return{Nombre:g(["Nombre","nombre","name"]),Apellidos:g(["Apellidos","apellidos","surname"]),Puntuación:g(["Puntuación","puntuación","score"]),Tiempo:g(["Tiempo","tiempo","time"])};});
+                const vd=pd.filter(r=>r.Puntuación!==null&&!isNaN(parseFloat(r.Puntuación)));
+                if(!vd.length){tbody.innerHTML='<tr><td colspan="4" class="hall-of-fame-loading">¡Sé el primero en guardar tu puntuación!</td></tr>';}
+                else{vd.sort((a,b)=>{const sa=parseFloat(a.Puntuación)||0,sb=parseFloat(b.Puntuación)||0;if(sb!==sa)return sb-sa;return(parseFloat(a.Tiempo)||9999)-(parseFloat(b.Tiempo)||9999);});
+                tbody.innerHTML='';vd.slice(0,10).forEach((it,i)=>{const tr=document.createElement('tr');const dn=`${it.Nombre} ${it.Apellidos}`.trim();let ts=it.Tiempo;if(!isNaN(parseFloat(it.Tiempo)))ts=formatTime(parseFloat(it.Tiempo));tr.innerHTML=`<td>${i+1}º</td><td>${dn}</td><td>${it.Puntuación||0}</td><td>${ts}</td>`;tbody.appendChild(tr);});}
+            }else{tbody.innerHTML='<tr><td colspan="4" class="hall-of-fame-error">Error de datos.</td></tr>';}
+        }).catch(e=>{clearTimeout(tid);console.error("HOF:",e);tbody.innerHTML='<tr><td colspan="4" class="hall-of-fame-error">Error de conexión.</td></tr>';}).finally(()=>{isHofLoading=false;});
+    }
+    function showSubmitModal(time,score){document.getElementById('modalTime').textContent=formatTime(time);document.getElementById('playerName').value='';document.getElementById('playerSurname').value='';document.getElementById('submitModal').style.display='flex';const b=document.getElementById('submitScoreBtn');b.textContent=i18n[currentLang].modalSave;b.disabled=false;document.getElementById('playerName').focus();}
+    function handleSubmitScore(){const b=document.getElementById('submitScoreBtn');const ni=document.getElementById('playerName');const si=document.getElementById('playerSurname');reproducirSonidoTap();const p={score:finalScoreVal,time:finalTimeVal,name:ni.value.trim(),surname:si.value.trim()};
+    if(p.name&&p.surname){const ot=b.textContent;b.textContent="Enviando...";b.disabled=true;fetch(APP_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({sheet:SHEET_NAME,action:'write',data:p})}).then(()=>{document.getElementById('submitModal').style.display='none';b.textContent=ot;b.disabled=false;setTimeout(loadHallOfFame,1500);}).catch(e=>{console.error("Err:",e);alert("Error al enviar puntuación.");b.textContent=ot;b.disabled=false;});}else{alert("Por favor, rellena nombre y apellido");}}
+    document.getElementById('submitScoreBtn').onclick=handleSubmitScore;
+    document.getElementById('discardScoreBtn').onclick=()=>{reproducirSonidoTap();document.getElementById('submitModal').style.display='none';};
+    document.getElementById('playerName').addEventListener('keypress',e=>{if(e.key==='Enter')document.getElementById('playerSurname').focus();});
+    document.getElementById('playerSurname').addEventListener('keypress',e=>{if(e.key==='Enter')handleSubmitScore();});
+    document.getElementById('backToMenuBtn').onclick=()=>{reproducirSonidoTap();location.reload();};
+    document.getElementById('muteBtn').onclick=toggleSound;
+    document.addEventListener('DOMContentLoaded',()=>{applyLanguage('es');loadHallOfFame();});
 </script>
 </body>
 </html>
